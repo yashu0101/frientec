@@ -742,14 +742,20 @@ every deploy silently resets the catalogue to the seed.
 ### Railway
 
 `railway.toml` and the `Dockerfile` are committed, so the service builds as-is.
-Two things must be set in the Railway UI, because neither can live in the repo:
+The Dockerfile sets `NODE_ENV`, `PORT` and `DATA_DIR=/data` itself, so there are
+no environment variables to configure for persistence to work.
 
-1. **A volume**, mount path `/data` — this is the persistence.
-2. **`ANTHROPIC_API_KEY`**, only if you want AI drafting. Without it the studio
-   writes drafts on the device and everything else behaves identically.
+One thing must be done in the Railway UI, because it cannot live in the repo:
 
-`PORT` is injected by Railway and the server already reads it. The healthcheck
-is `/api/health`.
+1. **Attach a volume, mount path `/data`.** This is the persistence. Skip it and
+   the service still starts and looks fine — it just quietly reseeds the
+   catalogue on every deploy and loses the leads and orders.
+
+Optionally set **`ANTHROPIC_API_KEY`** to turn on AI drafting. Without it the
+studio writes drafts on the device and everything else behaves identically.
+
+`PORT` is injected by Railway and overrides the Dockerfile's default; the server
+reads it and binds all interfaces. The healthcheck is `/api/health`.
 
 ### Any other Node host
 

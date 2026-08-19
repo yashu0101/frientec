@@ -1,18 +1,15 @@
-# Railway. The volume is the part that matters: attach one in the service
-# settings with mount path /data, which is what DATA_DIR points at below.
-# Without it the catalogue reseeds on every deploy.
+# Railway config-as-code. Deliberately minimal: the Dockerfile already sets
+# NODE_ENV, PORT and DATA_DIR=/data, and its CMD is the start command, so the
+# only things left here are which builder to use and how to health-check it.
+#
+# The one thing that CANNOT live in this file is the volume. Attach one in the
+# service settings with mount path /data — that is what makes the leads and
+# orders survive a redeploy. Without it every deploy reseeds the catalogue.
 
 [build]
 builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "node server/index.js"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 30
-restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 3
-
-[deploy.envs]
-NODE_ENV = "production"
-DATA_DIR = "/data"
+restartPolicyType = "ON_FAILURE"
