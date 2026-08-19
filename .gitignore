@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# build output
+client/dist/
+
+# runtime state. data/*.json is created on first boot from server/lib/seed.js and
+# then owned by the running server — it holds real leads, orders and phone
+# numbers, so it does not belong in the repo. A fresh clone reseeds itself.
+data/
+
+# the pre-React codebase, kept locally as a safety net after the port
+legacy-vanilla-backup.tar.gz
+
+# local
+.DS_Store
+*.log
+.env
+.env.local

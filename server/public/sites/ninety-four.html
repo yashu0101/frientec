@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ninety-Four — specialty coffee, brewed properly</title>
+<meta name="description" content="Single origin coffee roasted in Pune. Ninety-four degrees, four minutes, nothing else.">
+<meta name="theme-color" content="#12161a">
+<meta property="og:title" content="Ninety-Four — specialty coffee">
+<meta property="og:description" content="Watch the pour-over happen. Beans, grind, bloom, pour, cup.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 32 32&quot;%3E%3Crect width=&quot;32&quot; height=&quot;32&quot; fill=&quot;%2312161a&quot;/%3E%3Cpath d=&quot;M8 9h16l-3 14H11z&quot; fill=&quot;none&quot; stroke=&quot;%23d2762f&quot; stroke-width=&quot;2.2&quot;/%3E%3C/svg%3E">
+<style>
+  :root{
+    --slate:#12161a; --slate-2:#1a2026; --panel:#222a31;
+    --paper:#ece7dc; --paper-2:#e0dacd;
+    --copper:#d2762f; --water:#6fb6c9;
+    --text:#dfe4e6; --muted:#8b979d; --muted-dark:#5e686e;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --gut:clamp(20px,5vw,72px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{background:var(--slate);color:var(--text);font-family:var(--sans);line-height:1.5;overflow-x:hidden}
+  ::selection{background:var(--copper);color:#12161a}
+
+  #gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+  body.no3d{background:radial-gradient(120% 80% at 55% 25%,#2a333b,#12161a 62%)}
+  body.no3d #gl{display:none}
+  #prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:30;
+        background:linear-gradient(90deg,#8a4a1c,var(--copper));pointer-events:none;
+        box-shadow:0 0 12px rgba(210,118,47,.55)}
+  #vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+       background:radial-gradient(115% 88% at 50% 44%,rgba(18,22,26,0) 44%,rgba(18,22,26,.8) 100%)}
+  main{position:relative;z-index:3}
+
+  /* ---------- loader: a filling cup ---------- */
+  #load{position:fixed;inset:0;z-index:60;background:var(--slate);display:grid;place-items:center;
+        transition:opacity .7s ease,visibility 0s .7s}
+  body.open #load{opacity:0;visibility:hidden}
+  #load .cup{width:78px;height:64px;border:2px solid var(--muted);border-top:0;border-radius:0 0 14px 14px;position:relative;overflow:hidden}
+  #load .cup:after{content:"";position:absolute;right:-20px;top:8px;width:20px;height:26px;border:2px solid var(--muted);border-left:0;border-radius:0 12px 12px 0}
+  #load .fill{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--copper);animation:fill 1.5s cubic-bezier(.5,0,.3,1) forwards}
+  @keyframes fill{to{height:100%}}
+  #load .lbl{margin-top:22px;font-family:var(--mono);font-size:10px;letter-spacing:.34em;color:var(--muted);text-align:center}
+
+  /* ---------- brew readout ---------- */
+  #hud{position:fixed;left:var(--gut);bottom:26px;z-index:12;pointer-events:none;
+       border-left:2px solid var(--copper);padding:2px 0 2px 12px;opacity:0;transition:opacity .6s .3s}
+  body.open #hud{opacity:1}
+  #hud .st{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--copper)}
+  #hud .rd{display:flex;gap:16px;margin-top:7px;flex-wrap:wrap}
+  #hud .rd span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);white-space:nowrap}
+  #hud .rd b{color:var(--text);font-weight:400}
+  #hud .rd b.w{color:var(--water)}
+  #bar{width:150px;height:2px;background:rgba(139,151,157,.3);margin-top:10px}
+  #bar i{display:block;height:100%;width:0;background:var(--copper)}
+
+  /* ---------- brew timer rail ---------- */
+  #rail{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:12;pointer-events:none;
+        height:min(52vh,380px);width:56px;opacity:0;transition:opacity .6s .4s}
+  body.open #rail{opacity:1}
+  #rail .ln{position:absolute;right:0;top:0;bottom:0;width:1px;background:rgba(139,151,157,.3)}
+  #rail .tk{position:absolute;right:0;width:9px;height:1px;background:rgba(139,151,157,.42)}
+  #rail .tk.maj{width:18px;background:rgba(139,151,157,.72)}
+  #rail .tk em{position:absolute;right:22px;top:-6px;font-style:normal;font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;color:var(--muted)}
+  #mk{position:absolute;right:0;width:34px;height:2px;background:var(--copper)}
+  #mk em{position:absolute;right:38px;top:-7px;font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--copper);white-space:nowrap}
+
+  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:11px}
+  .eyebrow:before{content:"";width:24px;height:2px;background:var(--copper);flex:none}
+  h1{font-size:clamp(2.5rem,8vw,7rem);line-height:.93;letter-spacing:-.045em;font-weight:800;text-wrap:balance}
+  h2{font-size:clamp(1.9rem,5vw,4.1rem);line-height:1.02;letter-spacing:-.04em;font-weight:800;text-wrap:balance}
+  h3{font-size:clamp(1.2rem,2.2vw,1.7rem);line-height:1.16;letter-spacing:-.025em;font-weight:700}
+  p.lede{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--muted);max-width:44ch;line-height:1.65}
+  .mono{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .cu{color:var(--copper)} .wa{color:var(--water)}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:18px;
+      padding:16px var(--gut);border-bottom:1px solid transparent;transition:background .4s,backdrop-filter .4s,border-color .4s}
+  nav.stuck{background:rgba(18,22,26,.76);backdrop-filter:blur(14px);border-bottom-color:rgba(223,228,230,.14)}
+  .logo{font-family:var(--mono);font-size:12px;letter-spacing:.28em;font-weight:700;color:var(--text);text-decoration:none}
+  .logo em{font-style:normal;color:var(--copper)}
+  nav .links{display:flex;gap:26px;margin-left:auto}
+  nav .links a{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s}
+  nav .links a:hover{color:var(--text)}
+
+  .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+       text-transform:uppercase;padding:14px 22px;border-radius:1px;text-decoration:none;border:1px solid transparent;transition:.28s;cursor:pointer;white-space:nowrap}
+  .btn{position:relative;overflow:hidden;isolation:isolate}
+  .btn:before{content:"";position:absolute;inset:0;z-index:-1;transform:translateY(101%);
+              transition:transform .38s cubic-bezier(.3,.7,.25,1)}
+  .btn-p{background:var(--copper);color:#12161a;font-weight:700}
+  .btn-p:before{background:#f0913f}
+  .btn-p:hover{transform:translateY(-2px)}
+  .btn-p:hover:before{transform:translateY(0)}
+  .btn-g:before{background:rgba(210,118,47,.14)}
+  .btn-g:hover:before{transform:translateY(0)}
+  .btn-g{border-color:rgba(223,228,230,.3);color:var(--text)}
+  .btn-g:hover{border-color:var(--copper);color:var(--copper)}
+  .btn-dark{background:var(--slate);color:var(--paper);font-weight:700}
+  .btn-dark:hover{transform:translateY(-2px)}
+  nav .btn{padding:11px 16px}
+
+  section{padding:clamp(80px,11vw,168px) var(--gut);position:relative}
+  .dark{background:transparent}
+  .solid{background:var(--slate-2)}
+  .light{background:var(--paper);color:#171a1c}
+  .light .mono,.light .eyebrow{color:var(--muted-dark)}
+  .light p.lede{color:#4a5155}
+  .scrim:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(100deg,rgba(18,22,26,.95) 0%,rgba(18,22,26,.82) 30%,rgba(18,22,26,.32) 58%,transparent 78%)}
+
+  #hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:118px;padding-bottom:150px}
+  #hero h1{margin:26px 0 0;max-width:13ch}
+  #hero .row{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-end;margin-top:36px}
+  #hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  #cue{position:absolute;right:var(--gut);bottom:38px;display:flex;align-items:center;gap:10px;
+       pointer-events:none;transition:opacity .6s}
+  #cue span{font-family:var(--mono);font-size:9px;letter-spacing:.3em;color:var(--muted)}
+  #cue i{display:block;width:1px;height:28px;background:linear-gradient(var(--copper),transparent);
+         animation:drip 2s ease-in-out infinite}
+  @keyframes drip{0%{transform:translateY(-9px);opacity:0}40%{opacity:1}100%{transform:translateY(9px);opacity:0}}
+  body.scrolled #cue{opacity:0}
+
+  .tape{overflow:hidden;border-top:1px solid rgba(223,228,230,.16);border-bottom:1px solid rgba(223,228,230,.16);
+        padding:15px 0;background:rgba(18,22,26,.7);backdrop-filter:blur(6px)}
+  .tape .run{display:flex;gap:48px;white-space:nowrap;animation:slide 32s linear infinite;will-change:transform}
+  .tape span{font-family:var(--mono);font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+  .tape span b{color:var(--copper);font-weight:400}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  #recipe{padding-top:clamp(60px,8vw,110px)}
+  .steps{max-width:520px}
+  .step{padding:clamp(38px,6.5vw,86px) 0;border-top:1px solid rgba(223,228,230,.14)}
+  .step .tm{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+  .step .tm b{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--copper);font-weight:400}
+  .step .tm i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted);opacity:.72}
+  .step h3{margin-bottom:12px}
+  .step p{color:var(--muted);font-size:15.5px;line-height:1.65;max-width:40ch}
+  .step .kit{margin-top:16px;display:flex;gap:16px;flex-wrap:wrap}
+  .step .kit span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.75}
+  .step .kit span:before{content:"▸ ";color:var(--copper)}
+
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(223,228,230,.16);
+         border:1px solid rgba(223,228,230,.16);margin-top:clamp(40px,6vw,72px)}
+  .card{background:var(--panel);padding:clamp(24px,2.6vw,38px);min-height:262px;display:flex;flex-direction:column}
+  .card svg{margin-bottom:auto}
+  .card h3{font-size:1.02rem;margin:32px 0 10px}
+  .card p{font-size:14px;color:var(--muted);line-height:1.6}
+  .card .inc{margin-top:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);opacity:.75}
+
+  .statement{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(30px,5vw,70px);align-items:end}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(23,26,28,.16);margin-top:clamp(46px,6vw,78px)}
+  .stat{background:var(--paper);padding:clamp(22px,3vw,34px)}
+  .stat .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-dark)}
+  .stat .v{font-size:clamp(2rem,4.2vw,3.4rem);font-weight:800;letter-spacing:-.045em;line-height:1;margin-top:12px}
+  .stat .v small{font-size:.33em;font-weight:600;letter-spacing:.02em;color:var(--muted-dark);margin-left:5px}
+
+  .faq{max-width:860px;margin-top:clamp(36px,5vw,58px);border-top:1px solid rgba(23,26,28,.18)}
+  details{border-bottom:1px solid rgba(23,26,28,.18)}
+  summary{list-style:none;cursor:pointer;padding:26px 40px 26px 0;position:relative;font-size:clamp(1rem,1.85vw,1.3rem);font-weight:700;letter-spacing:-.02em}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"";position:absolute;right:6px;top:50%;width:11px;height:11px;margin-top:-6px;
+                border-right:1.5px solid #171a1c;border-bottom:1.5px solid #171a1c;transform:rotate(45deg);transition:transform .3s}
+  details[open] summary:after{transform:rotate(-135deg)}
+  details p{padding:0 0 26px;color:#4a5155;font-size:15.5px;line-height:1.7;max-width:64ch}
+
+  #contact{min-height:84vh;min-height:88svh;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center}
+  #contact h2{max-width:15ch}
+  #contact .cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+  footer{border-top:1px solid rgba(223,228,230,.14);padding:26px var(--gut);display:flex;flex-wrap:wrap;
+         gap:14px 26px;align-items:center;background:rgba(18,22,26,.88);position:relative;z-index:3}
+  footer .mono{font-size:10px}
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--text)}
+  footer .sp{margin-left:auto}
+
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.25,1),transform .9s cubic-bezier(.2,.7,.25,1)}
+  .rv.in{opacity:1;transform:none}
+  a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
+  body.lit #hud,body.lit #rail{opacity:0;transition:opacity .45s}
+
+  @media (max-width:1000px){ .grid4{grid-template-columns:repeat(2,1fr)} .statement{grid-template-columns:1fr} .stats{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:760px){
+    nav .links{display:none}
+    .grid4{grid-template-columns:1fr}
+    #hero{min-height:92vh;min-height:96svh;padding-bottom:168px}
+    #rail{display:none}
+    #hud{left:20px;bottom:18px}
+    #cue{display:none}
+    #bar{width:112px}
+    .card{min-height:190px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none;transition:none}
+    .tape .run{animation:none}
+    #load .fill{animation-duration:.3s}
+    #cue i{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="prog"></div>
+<div id="vig"></div>
+
+<div id="load" aria-hidden="true">
+  <div>
+    <div class="cup"><div class="fill"></div></div>
+    <div class="lbl">94°C · 4:00</div>
+  </div>
+</div>
+
+<div id="hud" aria-hidden="true">
+  <div class="st" id="h-stage">Dose</div>
+  <div class="rd">
+    <span>TIME <b id="h-time">--:--</b></span>
+    <span>WATER <b class="w" id="h-water">0 g</b></span>
+    <span>TEMP <b id="h-temp">20°C</b></span>
+  </div>
+  <div id="bar"><i id="h-bar"></i></div>
+</div>
+
+<div id="rail" aria-hidden="true">
+  <div class="ln"></div>
+  <div id="ticks"></div>
+  <div id="mk"><em>0:00</em></div>
+</div>
+
+<nav id="nav">
+  <a class="logo" href="#hero">NINETY<em>·</em>FOUR</a>
+  <div class="links">
+    <a href="#recipe">The brew</a>
+    <a href="#shop">Coffee</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a class="btn btn-p" href="#contact">Get the beans</a>
+</nav>
+
+<main>
+
+  <section id="hero" class="dark scrim">
+    <div class="eyebrow">Roasted in Pune &nbsp;/&nbsp; single origin &nbsp;/&nbsp; est. 2019</div>
+    <h1>Ninety-four degrees. Four minutes. Nothing else.</h1>
+    <div class="row">
+      <p class="lede">We roast light, ship within four days of the roast date, and print the recipe on the bag. Scroll and watch the whole brew happen — dose, grind, bloom, pour, cup.</p>
+      <div class="cta">
+        <a class="btn btn-p" href="#contact">Get the beans</a>
+        <a class="btn btn-g" href="#recipe">Watch the brew</a>
+      </div>
+    </div>
+    <div id="cue" aria-hidden="true"><span>SCROLL TO BREW</span><i></i></div>
+  </section>
+
+  <div class="tape"><div class="run" id="tape"></div></div>
+
+  <section id="recipe" class="dark scrim">
+    <div class="eyebrow rv">The method</div>
+    <h2 class="rv" style="margin-top:22px;max-width:13ch">One cup, start to finish.</h2>
+    <div class="steps">
+      <div class="step rv">
+        <div class="tm"><b>–02:00</b><i>Dose</i></div>
+        <h3>Weigh the beans</h3>
+        <p>Fifteen grams for a 250 ml cup. That is a 1:16 ratio and it is the only number worth being fussy about — everything else on this page you can feel your way to.</p>
+        <div class="kit"><span>15.0 g</span><span>1:16</span><span>Scale to 0.1 g</span></div>
+      </div>
+      <div class="step rv">
+        <div class="tm"><b>–01:30</b><i>Grind</i></div>
+        <h3>Grind medium, grind fresh</h3>
+        <p>Coarse as table salt. Grind it right before you brew — coffee loses most of what makes it interesting within about fifteen minutes of being ground, and no amount of care later gets that back.</p>
+        <div class="kit"><span>Medium</span><span>Burr grinder</span><span>Grind at brew time</span></div>
+      </div>
+      <div class="step rv">
+        <div class="tm"><b>–00:30</b><i>Heat</i></div>
+        <h3>Water at ninety-four</h3>
+        <p>Off the boil, wait thirty seconds. Boiling water scorches a light roast and tastes hollow; too cool and it never gets going at all. Rinse the filter with the first of it and throw that water away.</p>
+        <div class="kit"><span>94°C</span><span>Rinse the paper</span><span>Warm the carafe</span></div>
+      </div>
+      <div class="step rv">
+        <div class="tm"><b>00:00</b><i>Bloom</i></div>
+        <h3>Wet it and wait</h3>
+        <p>Forty-five grams of water, just enough to soak the bed. It swells and gives off carbon dioxide — that is the fizzing. Wait forty-five seconds. Skipping this is the single most common reason a cup tastes sour.</p>
+        <div class="kit"><span>45 g</span><span>Wait 0:45</span><span>Bed swells</span></div>
+      </div>
+      <div class="step rv">
+        <div class="tm"><b>00:45</b><i>Pour</i></div>
+        <h3>Three pours, slow spiral</h3>
+        <p>Pour to 150 g, let it drop, then to 250 g. Spiral out from the middle and stop short of the paper — water running down the side of the filter never touches coffee and thins the cup.</p>
+        <div class="kit"><span>To 250 g</span><span>3 pours</span><span>Keep the bed flat</span></div>
+      </div>
+      <div class="step rv">
+        <div class="tm"><b>03:30</b><i>Serve</i></div>
+        <h3>Drawdown, then drink it</h3>
+        <p>The bed should run dry around three-thirty and sit flat, not craterous. Swirl the carafe once and pour. It is best in the first few minutes, which is the actual reason to make it by hand.</p>
+        <div class="kit"><span>Total 4:00</span><span>Flat bed</span><span>Drink hot</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shop" class="solid">
+    <div class="eyebrow rv">What we sell</div>
+    <h2 class="rv" style="margin-top:22px;max-width:16ch">Coffee, and the things around it.</h2>
+    <div class="grid4">
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#d2762f" stroke-width="1.5"><path d="M7 6h18l-2 20H9z"/><path d="M11 6c0-3 10-3 10 0"/><path d="M12 13h8"/></svg>
+        <h3>Single origin</h3>
+        <p>One farm, one lot, roasted light. Chikmagalur, Araku and a rotating guest lot from outside India.</p>
+        <div class="inc">250 g · whole bean</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#d2762f" stroke-width="1.5"><path d="M5 8h22l-9 12v8h-4v-8z"/><path d="M9 14h14"/></svg>
+        <h3>Subscription</h3>
+        <p>A bag every two or four weeks, shipped within four days of roasting. Skip or pause any week, no notice needed.</p>
+        <div class="inc">From ₹—/month</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#d2762f" stroke-width="1.5"><path d="M10 5h12l-3 9H13z"/><path d="M16 14v6"/><path d="M8 26h16"/><path d="M11 20h10l3 6H8z"/></svg>
+        <h3>Brew kit</h3>
+        <p>Dripper, papers, a scale that reads to a tenth and a gooseneck kettle. Everything on this page and nothing you will not use.</p>
+        <div class="inc">4 pieces · gift boxed</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#d2762f" stroke-width="1.5"><circle cx="16" cy="16" r="11"/><path d="M16 9v7l5 3"/></svg>
+        <h3>Cupping sessions</h3>
+        <p>Two hours at the roastery, six coffees, no jargon. You leave able to taste the difference between origins.</p>
+        <div class="inc">Saturdays · 8 seats</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="light">
+    <div class="statement">
+      <div>
+        <div class="eyebrow rv">The argument</div>
+        <h2 class="rv" style="margin-top:22px">Freshness beats technique, every time.</h2>
+      </div>
+      <p class="lede rv">A perfect pour-over from beans roasted three months ago will lose to a sloppy one made from beans roasted last week. Everything else here — the temperature, the spiral, the forty-five second bloom — only matters once the coffee is worth the trouble.</p>
+    </div>
+    <div class="stats">
+      <div class="stat rv"><div class="k">Roast to ship</div><div class="v" data-count="4">0<small>days</small></div></div>
+      <div class="stat rv"><div class="k">Brew temp</div><div class="v" data-count="94">0<small>°C</small></div></div>
+      <div class="stat rv"><div class="k">Ratio</div><div class="v">1<small>:16</small></div></div>
+      <div class="stat rv"><div class="k">Producers</div><div class="v" data-count="11">0</div></div>
+    </div>
+  </section>
+
+  <section id="faq" class="light">
+    <div class="eyebrow rv">Questions</div>
+    <h2 class="rv" style="margin-top:22px;max-width:15ch">Straight answers.</h2>
+    <div class="faq rv">
+      <details open>
+        <summary>Do I need a special kettle?</summary>
+        <p>It helps and it is not essential. A gooseneck gives you a slow, aimed stream, which keeps the bed flat. Without one, pour more gently and from lower down, and accept that the first few cups will be uneven.</p>
+      </details>
+      <details>
+        <summary>My coffee tastes sour. What did I do?</summary>
+        <p>Usually under-extraction: grind finer, use water closer to 94°C, or slow the pour so the total runs nearer four minutes. If it tastes bitter and dry instead, do the opposite — coarser grind, quicker pour.</p>
+      </details>
+      <details>
+        <summary>How should I store the beans?</summary>
+        <p>In the bag they arrived in, sealed, at room temperature and out of sunlight. Not the fridge — coffee takes on the smell of everything around it and condensation ruins it. Whole bean, ground only as you brew.</p>
+      </details>
+      <details>
+        <summary>Do you ship outside Pune?</summary>
+        <p>Across India, dispatched within four days of the roast date, usually two to four days in transit. Orders placed before Tuesday go out on that week's roast.</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="contact" class="dark">
+    <div class="eyebrow rv" style="justify-content:center">Orders</div>
+    <h2 class="rv" style="margin-top:24px">Fresh roast, every Wednesday.</h2>
+    <div class="cta rv">
+      <a class="btn btn-p" href="mailto:hello@example.com?subject=Coffee%20order">hello@example.com</a>
+      <a class="btn btn-g" href="#recipe">Watch the brew again</a>
+    </div>
+    <div class="mono rv" style="margin-top:22px">Roastery open Sat 9–1 &nbsp;·&nbsp; Pune</div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="logo" style="font-size:11px">NINETY<em>·</em>FOUR</span>
+  <span class="mono">Specialty coffee · Pune</span>
+  <span class="mono sp"><a href="mailto:hello@example.com">hello@example.com</a></span>
+  <span class="mono">© 2026</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function lerp(a,b,t){ return a+(b-a)*t; }
+function ease(t){ return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
+function seg(p,a,b){ return clamp((p-a)/(b-a),0,1); }
+function mulberry(a){
+  return function(){
+    a|=0; a=a+0x6D2B79F5|0;
+    var t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+setTimeout(function(){ document.body.classList.add('open'); }, reduce?200:1650);
+
+(function(){
+  var items=['Light roast','Roasted weekly','1:16 ratio','94°C','Single origin','Recipe on the bag','Pune','Ship in 4 days'];
+  var h='';
+  for (var r=0;r<2;r++) for (var i=0;i<items.length;i++) h+='<span><b>◦</b> '+items[i]+'</span>';
+  document.getElementById('tape').innerHTML=h;
+})();
+
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(!e.isIntersecting) return;
+    e.target.classList.add('in'); io.unobserve(e.target);
+    var c=e.target.querySelector('[data-count]'); if(c) countUp(c);
+  });
+},{threshold:0.18, rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(el,i){
+  el.style.transitionDelay=(i%4)*0.07+'s'; io.observe(el);
+});
+function countUp(el){
+  var target=parseFloat(el.getAttribute('data-count'));
+  var sm=el.querySelector('small'), tail=sm?sm.outerHTML:'';
+  if (reduce){ el.innerHTML=target+tail; return; }
+  var t0=performance.now();
+  (function step(now){
+    var p=clamp((now-t0)/1100,0,1);
+    el.innerHTML=Math.round(target*ease(p))+tail;
+    if(p<1) requestAnimationFrame(step);
+  })(performance.now());
+}
+
+(function(){
+  var lights=Array.prototype.slice.call(document.querySelectorAll('.light'));
+  if (!lights.length) return;
+  var lio=new IntersectionObserver(function(es){
+    es.forEach(function(e){ e.target.dataset.vis=e.intersectionRatio>0.45?'1':'0'; });
+    var any=false;
+    for (var i=0;i<lights.length;i++) if (lights[i].dataset.vis==='1'){ any=true; break; }
+    document.body.classList.toggle('lit', any);
+  },{threshold:[0,0.2,0.45,0.7,1]});
+  lights.forEach(function(l){ lio.observe(l); });
+})();
+
+var nav=document.getElementById('nav'), progEl=document.getElementById('prog');
+function navState(){
+  nav.classList.toggle('stuck', window.scrollY>40);
+  document.body.classList.toggle('scrolled', window.scrollY>90);
+  var max=document.body.scrollHeight-window.innerHeight;
+  progEl.style.width=(max>0?(window.scrollY/max*100):0)+'%';
+}
+navState();
+window.addEventListener('scroll', navState, {passive:true});
+window.addEventListener('resize', navState);
+
+/* brew timer rail */
+(function(){
+  var box=document.getElementById('ticks'), h='';
+  for (var s=0;s<=240;s+=30){
+    var maj=(s%60===0);
+    var lbl=Math.floor(s/60)+':'+(s%60<10?'0':'')+(s%60);
+    h+='<div class="tk'+(maj?' maj':'')+'" style="bottom:'+(s/240*100)+'%">'+(maj?'<em>'+lbl+'</em>':'')+'</div>';
+  }
+  box.innerHTML=h;
+})();
+
+var STAGES=[[0,'Dose'],[0.10,'Grind'],[0.22,'Heat'],[0.31,'Load'],[0.40,'Bloom'],[0.53,'Pour'],[0.72,'Drawdown'],[0.85,'Serve']];
+var hStage=document.getElementById('h-stage'), hTime=document.getElementById('h-time'),
+    hWater=document.getElementById('h-water'), hTemp=document.getElementById('h-temp'),
+    hBar=document.getElementById('h-bar'), mk=document.getElementById('mk');
+
+function updateHUD(p, water, temp){
+  var name=STAGES[0][1];
+  for (var i=0;i<STAGES.length;i++) if (p>=STAGES[i][0]) name=STAGES[i][1];
+  hStage.textContent=name;
+  var brewT=seg(p,0.40,0.86)*240;
+  hTime.textContent = p<0.40 ? '--:--' : Math.floor(brewT/60)+':'+(Math.floor(brewT%60)<10?'0':'')+Math.floor(brewT%60);
+  hWater.textContent=water.toFixed(0)+' g';
+  hTemp.textContent=temp.toFixed(0)+'°C';
+  hBar.style.width=(p*100)+'%';
+  mk.style.bottom=clamp(brewT/240*100,0,100)+'%';
+  mk.firstChild.textContent=Math.floor(brewT/60)+':'+(Math.floor(brewT%60)<10?'0':'')+Math.floor(brewT%60);
+}
+
+/* ================================================================
+   3D BREW
+   ================================================================ */
+function init3D(){
+var canvas=document.getElementById('gl');
+var renderer=new THREE.WebGLRenderer({canvas:canvas, antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.12;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+var scene=new THREE.Scene();
+(function(){
+  var c=document.createElement('canvas'); c.width=512; c.height=256;
+  var g=c.getContext('2d');
+  var lg=g.createLinearGradient(0,0,0,256);
+  lg.addColorStop(0,'#1c2329'); lg.addColorStop(0.46,'#121820'); lg.addColorStop(1,'#080a0d');
+  g.fillStyle=lg; g.fillRect(0,0,512,256);
+  var rg=g.createRadialGradient(256,150,8,256,150,190);
+  rg.addColorStop(0,'rgba(210,118,47,0.20)'); rg.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=rg; g.fillRect(0,0,512,256);
+  var t=new THREE.CanvasTexture(c);
+  t.mapping=THREE.EquirectangularReflectionMapping;
+  t.encoding=THREE.sRGBEncoding;
+  scene.background=t;
+})();
+scene.fog=new THREE.Fog(0x12161a, 36, 130);
+var camera=new THREE.PerspectiveCamera(40,1,0.1,400);
+
+/* ---------- studio environment (built, then pre-filtered) ---------- */
+function studioEquirect(){
+  var c=document.createElement('canvas'); c.width=1024; c.height=512;
+  var g=c.getContext('2d');
+  var lg=g.createLinearGradient(0,0,0,512);
+  lg.addColorStop(0,'#252c33'); lg.addColorStop(0.48,'#161b20'); lg.addColorStop(1,'#0a0d10');
+  g.fillStyle=lg; g.fillRect(0,0,1024,512);
+  function lamp(x,y,r,col,a){
+    var rg=g.createRadialGradient(x,y,2,x,y,r);
+    rg.addColorStop(0,col); rg.addColorStop(1,'rgba(0,0,0,0)');
+    g.globalAlpha=a; g.fillStyle=rg; g.fillRect(x-r,y-r,r*2,r*2); g.globalAlpha=1;
+  }
+  /* a big soft key, a cool fill, a warm kicker — like a real table-top set */
+  lamp(300,140,300,'rgba(255,246,230,1)',0.95);
+  lamp(770,175,215,'rgba(160,205,230,1)',0.70);
+  lamp(520,45,430,'rgba(255,255,255,1)',0.42);
+  lamp(110,360,190,'rgba(210,118,47,1)',0.45);
+  /* horizon line keeps highlights from looking like blobs */
+  g.fillStyle='rgba(255,255,255,0.05)'; g.fillRect(0,250,1024,3);
+  return c;
+}
+var pmrem=new THREE.PMREMGenerator(renderer);
+pmrem.compileEquirectangularShader();
+var eqTex=new THREE.CanvasTexture(studioEquirect());
+eqTex.mapping=THREE.EquirectangularReflectionMapping;
+eqTex.encoding=THREE.sRGBEncoding;
+var envRT=null;
+try { envRT=pmrem.fromEquirectangular(eqTex); scene.environment=envRT.texture; } catch(e){}
+eqTex.dispose();
+
+scene.add(new THREE.HemisphereLight(0x9fc4d8,0x1a1512,0.42));
+var key=new THREE.DirectionalLight(0xfff0dc,2.0);
+key.position.set(-9,17,9); key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);
+key.shadow.bias=-0.0006; key.shadow.normalBias=0.03;
+var kc=key.shadow.camera; kc.left=-18; kc.right=18; kc.top=18; kc.bottom=-18; kc.near=1; kc.far=64; kc.updateProjectionMatrix();
+scene.add(key);
+var fillL=new THREE.DirectionalLight(0x6fb6c9,0.45); fillL.position.set(12,7,-8); scene.add(fillL);
+var rimL=new THREE.DirectionalLight(0xd2762f,0.38); rimL.position.set(3,4,-14); scene.add(rimL);
+
+
+/* ================================================================
+   POST PROCESSING — bloom, grade, aberration, vignette, grain.
+   Hand-written: three's composer add-ons are not in this build.
+   ================================================================ */
+var isGL2=renderer.capabilities.isWebGL2;
+var sceneRT=null, bloomA=null, bloomB=null, ppW=1, ppH=1;
+
+var VERT=[
+  'varying vec2 vUv;',
+  'void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }'
+].join('\n');
+
+var brightMat=new THREE.ShaderMaterial({
+  uniforms:{ tDiffuse:{value:null}, threshold:{value:0.62}, knee:{value:0.34} },
+  vertexShader:VERT,
+  fragmentShader:[
+    'uniform sampler2D tDiffuse; uniform float threshold; uniform float knee;',
+    'varying vec2 vUv;',
+    'void main(){',
+    '  vec3 c=texture2D(tDiffuse,vUv).rgb;',
+    '  float l=dot(c,vec3(0.2126,0.7152,0.0722));',
+    '  float s=smoothstep(threshold,threshold+knee,l);',
+    '  gl_FragColor=vec4(c*s*s,1.0);',
+    '}'
+  ].join('\n'),
+  depthTest:false, depthWrite:false
+});
+
+var blurMat=new THREE.ShaderMaterial({
+  uniforms:{ tDiffuse:{value:null}, dir:{value:new THREE.Vector2()} },
+  vertexShader:VERT,
+  fragmentShader:[
+    'uniform sampler2D tDiffuse; uniform vec2 dir; varying vec2 vUv;',
+    'void main(){',
+    '  vec4 s=vec4(0.0);',
+    '  s+=texture2D(tDiffuse,vUv-dir*4.0)*0.0162;',
+    '  s+=texture2D(tDiffuse,vUv-dir*3.0)*0.0540;',
+    '  s+=texture2D(tDiffuse,vUv-dir*2.0)*0.1216;',
+    '  s+=texture2D(tDiffuse,vUv-dir*1.0)*0.1946;',
+    '  s+=texture2D(tDiffuse,vUv)*0.2270;',
+    '  s+=texture2D(tDiffuse,vUv+dir*1.0)*0.1946;',
+    '  s+=texture2D(tDiffuse,vUv+dir*2.0)*0.1216;',
+    '  s+=texture2D(tDiffuse,vUv+dir*3.0)*0.0540;',
+    '  s+=texture2D(tDiffuse,vUv+dir*4.0)*0.0162;',
+    '  gl_FragColor=s;',
+    '}'
+  ].join('\n'),
+  depthTest:false, depthWrite:false
+});
+
+var compMat=new THREE.ShaderMaterial({
+  uniforms:{
+    tScene:{value:null}, tBloom:{value:null},
+    strength:{value:0.62}, aberr:{value:0.55}, vig:{value:0.42},
+    grain:{value:0.035}, time:{value:0}
+  },
+  vertexShader:VERT,
+  fragmentShader:[
+    'uniform sampler2D tScene; uniform sampler2D tBloom;',
+    'uniform float strength; uniform float aberr; uniform float vig;',
+    'uniform float grain; uniform float time;',
+    'varying vec2 vUv;',
+    'float rnd(vec2 p){ return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453); }',
+    'void main(){',
+    '  vec2 uv=vUv; vec2 c=uv-0.5; float r2=dot(c,c);',
+    /* lens dispersion grows toward the edge of frame, like real glass */
+    '  vec2 off=c*aberr*r2*0.05;',
+    '  vec3 col;',
+    '  col.r=texture2D(tScene,uv+off).r;',
+    '  col.g=texture2D(tScene,uv).g;',
+    '  col.b=texture2D(tScene,uv-off).b;',
+    '  col+=texture2D(tBloom,uv).rgb*strength;',
+    /* grade: cool the shadows, warm the highlights */
+    '  float l=dot(col,vec3(0.2126,0.7152,0.0722));',
+    '  vec3 shad=col*vec3(0.93,0.985,1.10);',
+    '  vec3 high=col*vec3(1.06,1.005,0.93);',
+    '  col=mix(shad,high,smoothstep(0.20,0.85,l));',
+    /* gentle S-curve for contrast */
+    '  col=clamp(col,0.0,1.6);',
+    '  col=col*col*(3.0-2.0*col)*0.30+col*0.70;',
+    '  col*=1.0-vig*r2*1.65;',
+    '  float g=rnd(uv*vec2(1024.0,1024.0)+fract(time));',
+    '  col+=(g-0.5)*grain;',
+    '  gl_FragColor=vec4(col,1.0);',
+    '}'
+  ].join('\n'),
+  depthTest:false, depthWrite:false
+});
+
+var fsScene=new THREE.Scene();
+var fsCam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+var fsQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2), brightMat);
+fsScene.add(fsQuad);
+
+function newRT(w,h,ms,srgb){
+  var o={minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,format:THREE.RGBAFormat};
+  if (srgb) o.encoding=THREE.sRGBEncoding;
+  var rt;
+  if (ms && isGL2 && THREE.WebGLMultisampleRenderTarget){
+    rt=new THREE.WebGLMultisampleRenderTarget(w,h,o);
+    rt.samples=4;
+  } else {
+    rt=new THREE.WebGLRenderTarget(w,h,o);
+  }
+  return rt;
+}
+function resizeRTs(){
+  var sz=new THREE.Vector2();
+  renderer.getDrawingBufferSize(sz);
+  var w=Math.max(2,Math.floor(sz.x)), h=Math.max(2,Math.floor(sz.y));
+  if (w===ppW && h===ppH && sceneRT) return;
+  ppW=w; ppH=h;
+  if (sceneRT) sceneRT.dispose();
+  if (bloomA) bloomA.dispose();
+  if (bloomB) bloomB.dispose();
+  sceneRT=newRT(w,h,true,true);
+  var hw=Math.max(2,Math.floor(w/2)), hh=Math.max(2,Math.floor(h/2));
+  bloomA=newRT(hw,hh,false,false);
+  bloomB=newRT(hw,hh,false,false);
+}
+function blit(mat,target){
+  fsQuad.material=mat;
+  renderer.setRenderTarget(target||null);
+  renderer.render(fsScene,fsCam);
+  renderer.setRenderTarget(null);
+}
+function renderPipeline(time){
+  resizeRTs();
+  renderer.setRenderTarget(sceneRT);
+  renderer.clear();
+  renderer.render(scene,camera);
+  renderer.setRenderTarget(null);
+
+  var hw=bloomA.width, hh=bloomA.height;
+  brightMat.uniforms.tDiffuse.value=sceneRT.texture;
+  blit(brightMat,bloomA);
+  /* two blur widths give the glow a soft core and a wide halo */
+  blurMat.uniforms.tDiffuse.value=bloomA.texture; blurMat.uniforms.dir.value.set(1.0/hw,0); blit(blurMat,bloomB);
+  blurMat.uniforms.tDiffuse.value=bloomB.texture; blurMat.uniforms.dir.value.set(0,1.0/hh); blit(blurMat,bloomA);
+  blurMat.uniforms.tDiffuse.value=bloomA.texture; blurMat.uniforms.dir.value.set(2.5/hw,0); blit(blurMat,bloomB);
+  blurMat.uniforms.tDiffuse.value=bloomB.texture; blurMat.uniforms.dir.value.set(0,2.5/hh); blit(blurMat,bloomA);
+
+  compMat.uniforms.tScene.value=sceneRT.texture;
+  compMat.uniforms.tBloom.value=bloomA.texture;
+  compMat.uniforms.time.value=time;
+  blit(compMat,null);
+}
+
+var R=mulberry(94);
+
+/* ---------- real-time cube camera: the glass refracts the actual scene ---------- */
+var cubeRT=new THREE.WebGLCubeRenderTarget(128,{
+  format:THREE.RGBFormat, generateMipmaps:true, minFilter:THREE.LinearMipmapLinearFilter
+});
+cubeRT.texture.mapping=THREE.CubeRefractionMapping;
+var cubeCam=new THREE.CubeCamera(0.5,80,cubeRT);
+cubeCam.position.set(7.5,3.2,0);
+scene.add(cubeCam);
+var glassMeshes=[];
+
+function glassOuter(extra){
+  var o={ color:0xdcecf2, metalness:0, roughness:0.03, transparent:true, opacity:0.20,
+          clearcoat:1, clearcoatRoughness:0.03, envMapIntensity:1.5, side:THREE.DoubleSide,
+          depthWrite:false };
+  if (extra) for (var k in extra) o[k]=extra[k];
+  return new THREE.MeshPhysicalMaterial(o);
+}
+function glassInner(ratio,op){
+  return new THREE.MeshBasicMaterial({
+    envMap:cubeRT.texture, refractionRatio:ratio, reflectivity:0.9,
+    transparent:true, opacity:op, side:THREE.BackSide, depthWrite:false,
+    color:0xcfe4ec
+  });
+}
+/* a piece of glass = a reflective shell plus a refractive shell just inside it */
+function makeGlass(geo, ratio, op, scaleIn){
+  var g=new THREE.Group();
+  var outer=new THREE.Mesh(geo, glassOuter());
+  var inner=new THREE.Mesh(geo, glassInner(ratio, op));
+  inner.scale.setScalar(scaleIn||0.965);
+  g.add(inner); g.add(outer);
+  glassMeshes.push(outer, inner);
+  return g;
+}
+
+/* ---------- counter ---------- */
+var counter=new THREE.Mesh(new THREE.BoxGeometry(52,1.4,32),
+  new THREE.MeshStandardMaterial({color:0x22252a,roughness:0.26,metalness:0.22,envMapIntensity:0.95}));
+counter.position.y=-0.7; counter.receiveShadow=true; scene.add(counter);
+var backwall=new THREE.Mesh(new THREE.PlaneGeometry(80,40),
+  new THREE.MeshStandardMaterial({color:0x171b20,roughness:1,metalness:0}));
+backwall.position.set(0,16,-17); scene.add(backwall);
+
+/* soft contact shadows keep everything sitting on the counter */
+function blobTex(){
+  var c=document.createElement('canvas'); c.width=c.height=128;
+  var g=c.getContext('2d');
+  var rg=g.createRadialGradient(64,64,2,64,64,62);
+  rg.addColorStop(0,'rgba(0,0,0,0.72)'); rg.addColorStop(0.55,'rgba(0,0,0,0.28)'); rg.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=rg; g.fillRect(0,0,128,128);
+  return new THREE.CanvasTexture(c);
+}
+var BLOB=blobTex();
+function contact(x,z,sx,sz){
+  var m=new THREE.Mesh(new THREE.PlaneGeometry(sx,sz),
+    new THREE.MeshBasicMaterial({map:BLOB,transparent:true,opacity:0.85,depthWrite:false}));
+  m.rotation.x=-Math.PI/2; m.position.set(x,0.012,z); scene.add(m); return m;
+}
+contact(0,0,11,10); contact(7.5,0,10,10); contact(15.5,2.4,8,8);
+var kettleShadow=contact(-6.5,3.2,9,9);
+
+/* caustic patch under the carafe, from light through the glass */
+function causticTex(){
+  var c=document.createElement('canvas'); c.width=c.height=256;
+  var g=c.getContext('2d');
+  g.fillStyle='#000'; g.fillRect(0,0,256,256);
+  for (var i=0;i<26;i++){
+    var x=Math.random()*256, y=Math.random()*256, r=12+Math.random()*40;
+    var rg=g.createRadialGradient(x,y,1,x,y,r);
+    rg.addColorStop(0,'rgba(255,206,150,0.55)'); rg.addColorStop(1,'rgba(0,0,0,0)');
+    g.fillStyle=rg; g.beginPath(); g.arc(x,y,r,0,6.3); g.fill();
+  }
+  var t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  return t;
+}
+var causticMap=causticTex();
+var caustic=new THREE.Mesh(new THREE.PlaneGeometry(7,7),
+  new THREE.MeshBasicMaterial({map:causticMap,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+caustic.rotation.x=-Math.PI/2; caustic.position.set(7.5,0.02,0.6); scene.add(caustic);
+
+/* ---------- scale with a live display ---------- */
+var scaleCv=document.createElement('canvas'); scaleCv.width=256; scaleCv.height=128;
+var scaleCtx=scaleCv.getContext('2d');
+var scaleTex=new THREE.CanvasTexture(scaleCv); scaleTex.encoding=THREE.sRGBEncoding;
+function drawScale(val,unit){
+  var g=scaleCtx;
+  g.fillStyle='#0b0f12'; g.fillRect(0,0,256,128);
+  g.fillStyle='#6fb6c9'; g.font='700 64px ui-monospace, Menlo, monospace';
+  g.textAlign='right'; g.textBaseline='middle';
+  g.fillText(val,196,66);
+  g.font='600 26px ui-monospace, Menlo, monospace'; g.fillStyle='#4d7c8a';
+  g.fillText(unit,240,74);
+  scaleTex.needsUpdate=true;
+}
+drawScale('15.0','g');
+var scaleBody=new THREE.Mesh(new THREE.BoxGeometry(7,0.7,6),
+  new THREE.MeshStandardMaterial({color:0x1e2429,roughness:0.28,metalness:0.55,envMapIntensity:1.1}));
+scaleBody.position.set(0,0.35,0); scaleBody.castShadow=true; scaleBody.receiveShadow=true; scene.add(scaleBody);
+var scaleFace=new THREE.Mesh(new THREE.PlaneGeometry(2.6,1.3),
+  new THREE.MeshBasicMaterial({map:scaleTex}));
+scaleFace.rotation.x=-Math.PI/2; scaleFace.position.set(0,0.71,2.0); scene.add(scaleFace);
+
+/* ---------- beans and grounds ---------- */
+var beanMat=new THREE.MeshStandardMaterial({color:0x4a2a18,roughness:0.5,metalness:0.02,envMapIntensity:0.8});
+var beans=new THREE.InstancedMesh(new THREE.SphereGeometry(0.26,12,10), beanMat, 46);
+beans.castShadow=true; scene.add(beans);
+var beanPos=[];
+for (var b=0;b<46;b++){
+  var ba=R()*6.28, br=R()*1.9;
+  beanPos.push({x:Math.cos(ba)*br, z:Math.sin(ba)*br-0.4, y:0.85+Math.floor(b/16)*0.4, rot:R()*3.14});
+}
+var _m=new THREE.Matrix4(), _p=new THREE.Vector3(), _q=new THREE.Quaternion(), _e=new THREE.Euler(), _s=new THREE.Vector3();
+function putBean(i,x,y,z,sv,rz){
+  _p.set(x,y,z); _e.set(0,rz,0.5); _q.setFromEuler(_e); _s.set(sv*1.35,sv*0.8,sv);
+  _m.compose(_p,_q,_s); beans.setMatrixAt(i,_m);
+}
+var groundsMat=new THREE.MeshStandardMaterial({color:0x40281a,roughness:0.95,metalness:0});
+var groundsPile=new THREE.Mesh(new THREE.CylinderGeometry(1.9,2.3,0.7,28), groundsMat);
+groundsPile.position.set(0,0.75,-0.4); groundsPile.castShadow=true; scene.add(groundsPile);
+
+/* ---------- brew station ---------- */
+var brewGroup=new THREE.Group(); brewGroup.position.set(7.5,0,0); scene.add(brewGroup);
+
+/* glass dripper: cone shell, refractive */
+var coneGeo=new THREE.CylinderGeometry(3.3,0.85,3.4,44,1,true);
+var dripper=makeGlass(coneGeo,0.94,0.5,0.955);
+dripper.position.y=6.4; brewGroup.add(dripper);
+var dripRim=new THREE.Mesh(new THREE.TorusGeometry(3.3,0.17,12,52),
+  new THREE.MeshPhysicalMaterial({color:0xdfe9ee,roughness:0.08,metalness:0,clearcoat:1,transparent:true,opacity:0.55}));
+dripRim.rotation.x=Math.PI/2; dripRim.position.y=8.1; brewGroup.add(dripRim);
+var stand=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.55,1.2,16),
+  new THREE.MeshStandardMaterial({color:0x9aa6ad,roughness:0.2,metalness:0.9,envMapIntensity:1.3}));
+stand.position.y=4.4; stand.castShadow=true; brewGroup.add(stand);
+
+var filter=new THREE.Mesh(new THREE.CylinderGeometry(3.02,0.8,3.2,36,1,true),
+  new THREE.MeshStandardMaterial({color:0xf3ece0,roughness:0.92,metalness:0,side:THREE.DoubleSide}));
+filter.position.y=6.5; brewGroup.add(filter);
+
+var bed=new THREE.Mesh(new THREE.CylinderGeometry(2.3,1.2,0.8,32), groundsMat);
+bed.position.y=5.9; bed.scale.setScalar(0.001); brewGroup.add(bed);
+
+var waterMat=new THREE.MeshPhysicalMaterial({color:0x3a2415,roughness:0.06,metalness:0.1,
+  transparent:true,opacity:0.9,clearcoat:1,clearcoatRoughness:0.1,envMapIntensity:1.2});
+var water=new THREE.Mesh(new THREE.CylinderGeometry(2.75,1.5,1,34), waterMat);
+water.position.y=6.4; water.scale.set(1,0.001,1); brewGroup.add(water);
+
+var bubbles=new THREE.InstancedMesh(new THREE.SphereGeometry(0.11,10,8),
+  new THREE.MeshPhysicalMaterial({color:0x8a5a34,roughness:0.25,clearcoat:1,emissive:0x2a1608,emissiveIntensity:0.35}), 26);
+bubbles.count=0; brewGroup.add(bubbles);
+
+/* glass carafe, turned on a lathe profile */
+function lathe(points, seg){
+  var v=[];
+  for (var i=0;i<points.length;i++) v.push(new THREE.Vector2(points[i][0],points[i][1]));
+  return new THREE.LatheGeometry(v, seg||52);
+}
+var carafeGeo=lathe([[0,0],[2.05,0],[2.32,0.22],[2.5,1.1],[2.62,2.3],[2.52,3.5],[2.26,4.25],[2.38,4.5]]);
+var carafe=makeGlass(carafeGeo,0.92,0.55,0.955);
+brewGroup.add(carafe);
+var coffeeMat=new THREE.MeshPhysicalMaterial({color:0x2b1509,roughness:0.12,metalness:0.05,
+  clearcoat:1,clearcoatRoughness:0.06,envMapIntensity:1.4});
+var coffee=new THREE.Mesh(new THREE.CylinderGeometry(2.5,2.15,1,36), coffeeMat);
+coffee.position.y=0.2; coffee.scale.set(1,0.001,1); brewGroup.add(coffee);
+var meniscus=new THREE.Mesh(new THREE.TorusGeometry(2.45,0.06,8,44),
+  new THREE.MeshPhysicalMaterial({color:0x6b4022,roughness:0.1,clearcoat:1,transparent:true,opacity:0.85}));
+meniscus.rotation.x=Math.PI/2; meniscus.visible=false; brewGroup.add(meniscus);
+
+var drip=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1,10),
+  new THREE.MeshPhysicalMaterial({color:0x53331d,roughness:0.08,clearcoat:1,transparent:true,opacity:0.92}));
+drip.visible=false; brewGroup.add(drip);
+
+/* ---------- kettle ---------- */
+var kettle=new THREE.Group(); kettle.position.set(-6.5,3.6,3.2); scene.add(kettle);
+var steelMat=new THREE.MeshStandardMaterial({color:0xa8b3ba,roughness:0.17,metalness:0.96,envMapIntensity:1.6});
+var darkMat=new THREE.MeshPhysicalMaterial({color:0x23282c,roughness:0.42,metalness:0.25,clearcoat:0.8});
+(function(){
+  var body=new THREE.Mesh(lathe([[0,-1.4],[1.55,-1.4],[1.82,-1.05],[1.98,-0.3],[1.92,0.6],[1.6,1.25],[1.2,1.45]]), steelMat);
+  body.castShadow=true; kettle.add(body);
+  var lid=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.32,0.34,26), steelMat);
+  lid.position.y=1.55; kettle.add(lid);
+  var knob=new THREE.Mesh(new THREE.SphereGeometry(0.25,14,12), darkMat);
+  knob.position.y=1.86; kettle.add(knob);
+  var handle=new THREE.Mesh(new THREE.TorusGeometry(1.15,0.14,12,30,Math.PI*1.1), darkMat);
+  handle.position.set(-2.0,0.4,0); handle.rotation.z=-0.5; kettle.add(handle);
+  var curve=new THREE.CatmullRomCurve3([
+    new THREE.Vector3(1.55,-0.6,0), new THREE.Vector3(2.7,0.5,0),
+    new THREE.Vector3(3.5,1.7,0), new THREE.Vector3(4.35,1.35,0),
+    new THREE.Vector3(4.75,0.6,0)
+  ]);
+  var spout=new THREE.Mesh(new THREE.TubeGeometry(curve,32,0.17,12,false), steelMat);
+  spout.castShadow=true; kettle.add(spout);
+})();
+var SPOUT=new THREE.Vector3(4.75,0.5,0);
+
+var stream=new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.055,1,10),
+  new THREE.MeshPhysicalMaterial({color:0xa8dcea,roughness:0.02,metalness:0.05,
+    transparent:true,opacity:0.82,clearcoat:1,clearcoatRoughness:0.02,
+    emissive:0x1e3d47,emissiveIntensity:0.45,envMapIntensity:1.6}));
+stream.visible=false; scene.add(stream);
+
+var serveStream=new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.09,1,10),
+  new THREE.MeshPhysicalMaterial({color:0x53331d,roughness:0.08,clearcoat:1,transparent:true,opacity:0.93}));
+serveStream.visible=false; scene.add(serveStream);
+
+/* ---------- cup ---------- */
+var cup=new THREE.Group(); cup.position.set(15.5,0,2.4); scene.add(cup);
+var cupMat=new THREE.MeshPhysicalMaterial({color:0xece7dc,roughness:0.22,metalness:0.02,
+  clearcoat:1,clearcoatRoughness:0.06,envMapIntensity:1.1,side:THREE.DoubleSide});
+(function(){
+  var body=new THREE.Mesh(lathe([[0,0],[1.3,0],[1.42,0.14],[1.5,0.6],[1.78,1.7],[1.9,2.25],[1.82,2.32]]), cupMat);
+  body.castShadow=true; cup.add(body);
+  var saucer=new THREE.Mesh(lathe([[0,0],[2.2,0],[2.7,0.16],[2.98,0.3],[2.9,0.36],[2.4,0.14],[0,0.08]]), cupMat);
+  saucer.receiveShadow=true; saucer.castShadow=true; cup.add(saucer);
+  var handle=new THREE.Mesh(new THREE.TorusGeometry(0.78,0.13,12,26,Math.PI*1.25), cupMat);
+  handle.position.set(1.92,1.32,0); handle.rotation.z=-0.35; handle.castShadow=true; cup.add(handle);
+})();
+var cupCoffee=new THREE.Mesh(new THREE.CylinderGeometry(1.72,1.28,1,32), coffeeMat);
+cupCoffee.position.y=0.3; cupCoffee.scale.set(1,0.001,1); cup.add(cupCoffee);
+
+/* ---------- steam ---------- */
+function makeSteam(n){
+  var pos=new Float32Array(n*3), seeds=[];
+  for (var i=0;i<n;i++){ seeds.push({a:R()*6.28,s:0.4+R()*0.9,o:R()}); }
+  var g=new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
+  var m=new THREE.PointsMaterial({color:0xdfe9ee,size:0.42,transparent:true,opacity:0,depthWrite:false});
+  var pts=new THREE.Points(g,m); scene.add(pts);
+  return {pts:pts,geo:g,mat:m,seeds:seeds,n:n};
+}
+var steamKettle=makeSteam(60), steamCup=makeSteam(50);
+function driveSteam(S,ox,oy,oz,t,strength,spread){
+  var arr=S.geo.attributes.position.array;
+  for (var i=0;i<S.n;i++){
+    var sd=S.seeds[i], life=((t*sd.s*0.28)+sd.o)%1;
+    arr[i*3]  =ox+Math.sin(t*0.9+sd.a)*spread*(0.3+life);
+    arr[i*3+1]=oy+life*4.2;
+    arr[i*3+2]=oz+Math.cos(t*0.7+sd.a)*spread*(0.3+life);
+  }
+  S.geo.attributes.position.needsUpdate=true;
+  S.mat.opacity=0.32*strength;
+}
+
+/* ---------- camera ---------- */
+var KEYS=[
+  {p:0.00, r:20, th:0.55, ph:1.15, tx:0,   ty:2.0},
+  {p:0.14, r:13, th:1.05, ph:1.30, tx:0,   ty:1.6},
+  {p:0.30, r:19, th:0.20, ph:1.18, tx:2.5, ty:3.6},
+  {p:0.44, r:12, th:-0.35,ph:0.75, tx:7.5, ty:6.6},
+  {p:0.60, r:15, th:0.55, ph:1.05, tx:7.5, ty:5.4},
+  {p:0.76, r:14, th:1.35, ph:1.24, tx:7.5, ty:3.2},
+  {p:0.90, r:16, th:0.85, ph:1.16, tx:12,  ty:2.2},
+  {p:1.00, r:23, th:0.35, ph:1.10, tx:9,   ty:2.6}
+];
+var cam={r:20,th:0.55,ph:1.15,tx:0,ty:2}, want={r:20,th:0.55,ph:1.15,tx:0,ty:2};
+var mx=0,my=0,tmx=0,tmy=0,fitK=1;
+function progress(){
+  var max=document.body.scrollHeight-window.innerHeight;
+  return max>0?clamp(window.scrollY/max,0,1):0;
+}
+function sample(p){
+  var a=KEYS[0], b=KEYS[KEYS.length-1];
+  for (var i=0;i<KEYS.length-1;i++){
+    if (p>=KEYS[i].p && p<=KEYS[i+1].p){ a=KEYS[i]; b=KEYS[i+1]; break; }
+  }
+  var t=ease(clamp((p-a.p)/Math.max(b.p-a.p,1e-6),0,1));
+  want.r=lerp(a.r,b.r,t)*fitK; want.th=lerp(a.th,b.th,t);
+  want.ph=lerp(a.ph,b.ph,t); want.tx=lerp(a.tx,b.tx,t); want.ty=lerp(a.ty,b.ty,t);
+}
+window.addEventListener('pointermove', function(e){
+  tmx=e.clientX/window.innerWidth-0.5; tmy=e.clientY/window.innerHeight-0.5;
+});
+function resize(){
+  var w=window.innerWidth, h=window.innerHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+  fitK=clamp(1.72/(w/h),1,1.8);
+  resizeRTs();
+}
+window.addEventListener('resize',resize); resize();
+
+/* ---------- the brew ---------- */
+var scaleAcc=0;
+function brew(p,t){
+  var grind=seg(p,0.10,0.23), heat=seg(p,0.21,0.34), load=seg(p,0.31,0.40);
+  var bloom=seg(p,0.40,0.53), pour=seg(p,0.53,0.72), draw=seg(p,0.72,0.85), serve=seg(p,0.85,1.00);
+  var i;
+
+  var bs=1-grind;
+  beans.count = bs>0.02 ? 46 : 0;
+  for (i=0;i<46;i++){
+    var bp=beanPos[i];
+    putBean(i,bp.x,bp.y-grind*0.5,bp.z,Math.max(bs,0.001),bp.rot+t*0.1*grind);
+  }
+  beans.instanceMatrix.needsUpdate=true;
+
+  var pileS=grind*(1-load);
+  groundsPile.visible=pileS>0.02;
+  groundsPile.scale.setScalar(Math.max(pileS,0.001));
+  groundsPile.position.set(lerp(0,7.5,load), lerp(0.75,6.0,load*load), -0.4*(1-load));
+
+  var swell=1+bloom*(1-bloom)*2.2-draw*0.12;
+  bed.visible=load>0.02;
+  bed.scale.set(Math.max(load,0.001),Math.max(load*swell,0.001),Math.max(load,0.001));
+  bed.position.y=5.9+bloom*0.12;
+
+  var pulses=Math.sin(pour*Math.PI*3);
+  var level=(bloom*0.45+pour*0.55+Math.max(pulses,0)*0.35)*(1-draw);
+  water.visible=level>0.01;
+  water.scale.set(1,Math.max(level*1.6,0.001),1);
+  water.position.y=5.95+level*0.8;
+  waterMat.opacity=0.6+0.32*clamp(pour+bloom,0,1);
+
+  var bubN=Math.round(clamp(bloom*(1-bloom)*4,0,1)*26);
+  bubbles.count=bubN;
+  for (i=0;i<bubN;i++){
+    var ang=i*2.4+t*0.6, rad=0.4+((i*0.37+t*0.25)%1)*1.9;
+    _p.set(Math.cos(ang)*rad, 6.35+bed.scale.y*0.4+Math.sin(t*3+i)*0.06, Math.sin(ang)*rad);
+    _s.setScalar(0.6+((i*0.13+t*0.4)%1)*0.9); _q.identity();
+    _m.compose(_p,_q,_s); bubbles.setMatrixAt(i,_m);
+  }
+  bubbles.instanceMatrix.needsUpdate=true;
+
+  var lift=clamp(bloom*3,0,1)*(1-clamp(draw*2,0,1));
+  var spiral=t*1.5;
+  kettle.position.set(lerp(-6.5,7.5+Math.cos(spiral)*(1.1*pour),lift)-4.2*lift,
+                      lerp(3.6,11.6,lift),
+                      lerp(3.2,Math.sin(spiral)*(1.1*pour),lift));
+  kettle.rotation.z=-lift*0.55;
+  kettle.rotation.y=lift*0.15;
+  kettleShadow.position.set(kettle.position.x,0.012,kettle.position.z);
+  kettleShadow.material.opacity=0.85*(1-lift*0.75);
+
+  var pouring=(bloom>0.04&&bloom<0.96)||(pour>0.02&&pour<0.99&&pulses>-0.15);
+  stream.visible=pouring&&lift>0.4;
+  if (stream.visible){
+    var sp=SPOUT.clone();
+    sp.applyEuler(new THREE.Euler(0,kettle.rotation.y,kettle.rotation.z,'YZX'));
+    sp.add(kettle.position);
+    var target=new THREE.Vector3(7.5+Math.cos(spiral)*0.9*pour, 6.2+level*0.9, Math.sin(spiral)*0.9*pour);
+    var d1=target.clone().sub(sp);
+    stream.position.copy(sp.clone().add(target).multiplyScalar(0.5));
+    stream.scale.set(1,d1.length(),1);
+    stream.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), d1.clone().normalize());
+  }
+
+  var fillF=clamp(bloom*0.06+pour*0.78+draw*0.18,0,1);
+  var poured=seg(p,0.90,0.99);
+  var fillNow=fillF*(1-poured);
+  coffee.visible=fillNow>0.01;
+  coffee.scale.set(1,Math.max(fillNow*3.4,0.001),1);
+  coffee.position.y=0.2+fillNow*1.7;
+  meniscus.visible=fillNow>0.03;
+  meniscus.position.y=0.2+fillNow*3.4;
+  meniscus.scale.setScalar(0.92+fillNow*0.08);
+  caustic.material.opacity=fillNow*0.32;
+  causticMap.offset.set(t*0.03, t*0.02);
+
+  var dripping=(pour>0.08||draw>0)&&draw<0.94;
+  drip.visible=dripping;
+  if (dripping){
+    var top=4.7, bot=0.5+fillNow*3.2;
+    drip.position.set(0,(top+bot)/2,0);
+    drip.scale.set(1,Math.max(top-bot,0.01),1);
+    drip.material.opacity=0.9*(1-draw*0.7);
+  }
+
+  dripper.position.y=6.4+serve*9;
+  filter.position.y=6.5+serve*9;
+  bed.position.y+=serve*9;
+  water.position.y+=serve*9;
+  dripRim.position.y=8.1+serve*9;
+  stand.position.y=4.4+serve*9;
+
+  cupCoffee.scale.set(1,Math.max(poured*1.5,0.001),1);
+  cupCoffee.position.y=0.3+poured*0.6;
+  serveStream.visible=poured>0.06&&poured<0.96;
+  if (serveStream.visible){
+    var from=new THREE.Vector3(9.4,3.4-poured*0.9,0.7), to=new THREE.Vector3(15.5,1.9,2.4);
+    var d2=to.clone().sub(from);
+    serveStream.position.copy(from.clone().add(to).multiplyScalar(0.5));
+    serveStream.scale.set(1,d2.length(),1);
+    serveStream.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), d2.clone().normalize());
+  }
+
+  driveSteam(steamKettle, kettle.position.x+1.2, kettle.position.y+1.7, kettle.position.z, t, heat*(1-lift*0.7)*(1-serve), 0.5);
+  driveSteam(steamCup, 15.5, 2.2, 2.4, t, poured*0.9, 0.55);
+
+  var water_g = p<0.31 ? 0 : (bloom*45+pour*160+draw*45);
+  var temp = lerp(24,94,heat)-draw*4-serve*8;
+  scaleAcc++;
+  if (scaleAcc>4){ scaleAcc=0; if (p<0.31) drawScale('15.0','g'); else drawScale(water_g.toFixed(0),'g'); }
+  updateHUD(p, water_g, temp);
+}
+
+/* ---------- loop ---------- */
+var t0=performance.now(), cubeTick=0;
+function frame(now){
+  var dt=Math.min(now-t0,120); t0=now;
+  var time=now*0.001, p=progress();
+  sample(p); brew(p,time);
+
+  var k=reduce?1:clamp(dt/1000*4,0,1);
+  cam.r=lerp(cam.r,want.r,k); cam.th=lerp(cam.th,want.th,k);
+  cam.ph=lerp(cam.ph,want.ph,k); cam.tx=lerp(cam.tx,want.tx,k); cam.ty=lerp(cam.ty,want.ty,k);
+  mx=lerp(mx,tmx,0.05); my=lerp(my,tmy,0.05);
+
+  /* refresh what the glass refracts — glass hides itself so it can see the room */
+  cubeTick++;
+  if (cubeTick%3===0){
+    for (var i=0;i<glassMeshes.length;i++) glassMeshes[i].visible=false;
+    cubeCam.position.set(7.5,3.2,0);
+    cubeCam.update(renderer,scene);
+    for (i=0;i<glassMeshes.length;i++) glassMeshes[i].visible=true;
+  }
+
+  var th=cam.th+mx*0.22, ph=clamp(cam.ph+my*0.12,0.16,1.46);
+  camera.position.set(
+    cam.tx+cam.r*Math.sin(ph)*Math.sin(th),
+    Math.max(cam.ty+cam.r*Math.cos(ph),0.8),
+    cam.r*Math.sin(ph)*Math.cos(th)
+  );
+  if (!reduce){
+    camera.position.x+=Math.sin(time*0.37)*0.13+Math.sin(time*0.91)*0.05;
+    camera.position.y+=Math.cos(time*0.29)*0.11+Math.sin(time*1.13)*0.04;
+  }
+  camera.lookAt(cam.tx,cam.ty,0);
+  renderPipeline(time);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+}
+
+try {
+  if (typeof THREE === 'undefined') throw new Error('three.js unavailable');
+  init3D();
+} catch (err) {
+  document.body.classList.add('no3d');
+}
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The Frendzo — professional websites for local businesses</title>
+<meta name="description" content="Ready-made website designs for restaurants, clinics, salons, gyms and more. Pick a design, tell us about your business, and we get it online." />
+<meta property="og:title" content="Professional websites for local businesses" />
+<meta property="og:description" content="Choose a design you love. We customise it with your name, photos and prices." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230E7C5A'/><rect x='8' y='9' width='16' height='4' rx='1.5' fill='white'/><rect x='8' y='16' width='7' height='7' rx='1.5' fill='white'/><rect x='17' y='16' width='7' height='7' rx='1.5' fill='white' opacity='.6'/></svg>" />
+<script>
+/* Theme before first paint — a saved choice wins, otherwise follow the OS.
+   Inline and synchronous on purpose: anything later flashes the wrong theme. */
+(function () {
+  try {
+    var saved = localStorage.getItem('sf_theme');
+    var dark = saved ? saved === 'dark'
+      : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    var lang = localStorage.getItem('sf_lang');
+    if (lang) document.documentElement.setAttribute('lang', lang);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+</head>
+<body>
+  <div id="root"><div class="boot">Loading the catalogue…</div></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Setu Buildworks — Civil &amp; structural contractors, Pune</title>
+<meta name="description" content="RCC frame, cladding and fit-out contractors working across Pune and Maharashtra. Slab cycles held, handover on date.">
+<meta name="theme-color" content="#15181b">
+<meta property="og:title" content="Setu Buildworks — Civil &amp; structural contractors">
+<meta property="og:description" content="We build the part that has to stay up. RCC frame, envelope and fit-out, handed over on date.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 32 32&quot;%3E%3Crect width=&quot;32&quot; height=&quot;32&quot; fill=&quot;%2315181b&quot;/%3E%3Cpath d=&quot;M6 26V10l10-5 10 5v16&quot; fill=&quot;none&quot; stroke=&quot;%23f5c518&quot; stroke-width=&quot;2.4&quot;/%3E%3C/svg%3E">
+<style>
+  :root{
+    --site:#15181b;
+    --steel:#1f2429;
+    --graphite:#2a3036;
+    --concrete:#d8d5ce;
+    --concrete-2:#cdc9c1;
+    --hivis:#f5c518;
+    --glass:#7fb0c8;
+    --text:#dfe2e4;
+    --muted:#8e979d;
+    --muted-dark:#5f6a71;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --gut:clamp(20px,5vw,72px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{background:var(--site);color:var(--text);font-family:var(--sans);line-height:1.5;overflow-x:hidden}
+  ::selection{background:var(--hivis);color:#14171a}
+
+  #gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+  body.no3d{background:linear-gradient(180deg,#2b3540 0%,#15181b 70%)}
+  body.no3d #gl{display:none}
+  #vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+       background:radial-gradient(120% 90% at 50% 42%,rgba(21,24,27,0) 45%,rgba(21,24,27,.78) 100%)}
+  main{position:relative;z-index:3}
+
+  /* ---------- site gate loader ---------- */
+  #gate{position:fixed;inset:0;z-index:60;pointer-events:none}
+  #gate .leaf{
+    position:absolute;top:0;bottom:0;width:51%;background:var(--steel);
+    transition:transform 1.15s cubic-bezier(.72,0,.18,1)
+  }
+  #gate .leaf.l{left:0;border-right:2px solid var(--hivis)}
+  #gate .leaf.r{right:0;border-left:2px solid var(--hivis)}
+  #gate .leaf:before{
+    content:"";position:absolute;inset:0;opacity:.5;
+    background:repeating-linear-gradient(45deg,#f5c518 0 18px,#15181b 18px 36px)
+  }
+  #gate .leaf.l:before{clip-path:polygon(0 0,100% 0,100% 15%,0 15%)}
+  #gate .leaf.r:before{clip-path:polygon(0 85%,100% 85%,100% 100%,0 100%)}
+  body.open #gate .leaf.l{transform:translateX(-101%)}
+  body.open #gate .leaf.r{transform:translateX(101%)}
+  body.open #gate{transition:visibility 0s 1.2s;visibility:hidden}
+  #gate .sign{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;
+    font-family:var(--mono);font-size:10px;letter-spacing:.34em;color:var(--hivis);
+    border:1px solid var(--hivis);padding:14px 20px;white-space:nowrap;transition:opacity .45s
+  }
+  body.open #gate .sign{opacity:0}
+
+  /* ---------- site readout HUD ---------- */
+  #hud{
+    position:fixed;left:var(--gut);bottom:26px;z-index:12;pointer-events:none;
+    border-left:2px solid var(--hivis);padding:2px 0 2px 12px;
+    opacity:0;transition:opacity .6s .4s
+  }
+  body.open #hud{opacity:1}
+  #hud .st{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--hivis)}
+  #hud .rd{display:flex;gap:16px;margin-top:7px;flex-wrap:wrap}
+  #hud .rd span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);white-space:nowrap}
+  #hud .rd b{color:var(--text);font-weight:400}
+  #bar{width:150px;height:2px;background:rgba(142,151,157,.3);margin-top:10px}
+  #bar i{display:block;height:100%;width:0;background:var(--hivis)}
+
+  /* ---------- elevation ruler ---------- */
+  #ruler{
+    position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:12;pointer-events:none;
+    height:min(52vh,380px);width:52px;opacity:0;transition:opacity .6s .5s
+  }
+  body.open #ruler{opacity:1}
+  #ruler .ln{position:absolute;right:0;top:0;bottom:0;width:1px;background:rgba(142,151,157,.3)}
+  #ruler .tk{position:absolute;right:0;width:9px;height:1px;background:rgba(142,151,157,.42)}
+  #ruler .tk.maj{width:18px;background:rgba(142,151,157,.7)}
+  #ruler .tk em{position:absolute;right:22px;top:-6px;font-style:normal;font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;color:var(--muted)}
+  #mk{position:absolute;right:0;width:34px;height:2px;background:var(--hivis);transition:bottom .12s linear}
+  #mk em{position:absolute;right:38px;top:-7px;font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--hivis);white-space:nowrap}
+
+  /* ---------- type ---------- */
+  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:11px}
+  .eyebrow:before{content:"";width:24px;height:2px;background:var(--hivis);flex:none}
+  h1{font-size:clamp(2.5rem,8vw,7rem);line-height:.93;letter-spacing:-.045em;font-weight:800;text-transform:uppercase;text-wrap:balance}
+  h2{font-size:clamp(1.9rem,5vw,4.1rem);line-height:1.02;letter-spacing:-.04em;font-weight:800;text-wrap:balance}
+  h3{font-size:clamp(1.2rem,2.2vw,1.7rem);line-height:1.16;letter-spacing:-.025em;font-weight:700}
+  p.lede{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--muted);max-width:44ch;line-height:1.65}
+  .mono{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .hv{color:var(--hivis)}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:18px;
+      padding:16px var(--gut);border-bottom:1px solid transparent;transition:background .4s,backdrop-filter .4s,border-color .4s}
+  nav.stuck{background:rgba(21,24,27,.76);backdrop-filter:blur(14px);border-bottom-color:rgba(223,226,228,.14)}
+  .logo{font-family:var(--mono);font-size:12px;letter-spacing:.28em;font-weight:700;color:var(--text);text-decoration:none}
+  .logo em{font-style:normal;color:var(--hivis)}
+  nav .links{display:flex;gap:26px;margin-left:auto}
+  nav .links a{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s}
+  nav .links a:hover{color:var(--text)}
+
+  .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+       text-transform:uppercase;padding:14px 22px;border-radius:1px;text-decoration:none;border:1px solid transparent;transition:.28s;cursor:pointer;white-space:nowrap}
+  .btn-p{background:var(--hivis);color:#14171a;font-weight:700}
+  .btn-p:hover{background:#ffd93d;transform:translateY(-2px)}
+  .btn-g{border-color:rgba(223,226,228,.3);color:var(--text)}
+  .btn-g:hover{border-color:var(--hivis);color:var(--hivis)}
+  .btn-dark{background:var(--site);color:var(--concrete);font-weight:700}
+  .btn-dark:hover{transform:translateY(-2px)}
+  nav .btn{padding:11px 16px}
+
+  section{padding:clamp(80px,11vw,168px) var(--gut);position:relative}
+  .dark{background:transparent}
+  .solid{background:var(--steel)}
+  .light{background:var(--concrete);color:#171a1c}
+  .light .mono,.light .eyebrow{color:var(--muted-dark)}
+  .light p.lede{color:#474d51}
+  .scrim:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(100deg,rgba(21,24,27,.95) 0%,rgba(21,24,27,.82) 30%,rgba(21,24,27,.32) 58%,transparent 78%)}
+
+  #hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:118px;padding-bottom:150px}
+  #hero h1{margin:26px 0 0;max-width:14ch}
+  #hero .row{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-end;margin-top:36px}
+  #hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+
+  .tape{overflow:hidden;border-top:2px solid var(--hivis);border-bottom:2px solid var(--hivis);
+        padding:14px 0;background:rgba(21,24,27,.75);backdrop-filter:blur(6px)}
+  .tape .run{display:flex;gap:48px;white-space:nowrap;animation:slide 30s linear infinite;will-change:transform}
+  .tape span{font-family:var(--mono);font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+  .tape span b{color:var(--hivis);font-weight:400}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  #sequence{padding-top:clamp(60px,8vw,110px)}
+  .stages{max-width:520px}
+  .stage{padding:clamp(40px,7vw,92px) 0;border-top:1px solid rgba(223,226,228,.14)}
+  .stage .lv{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+  .stage .lv b{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--hivis);font-weight:400}
+  .stage .lv i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted);opacity:.7}
+  .stage h3{margin-bottom:12px}
+  .stage p{color:var(--muted);font-size:15.5px;line-height:1.65;max-width:40ch}
+  .stage .kit{margin-top:16px;display:flex;gap:16px;flex-wrap:wrap}
+  .stage .kit span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.75}
+  .stage .kit span:before{content:"▸ ";color:var(--hivis)}
+
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(223,226,228,.16);
+         border:1px solid rgba(223,226,228,.16);margin-top:clamp(40px,6vw,72px)}
+  .card{background:var(--graphite);padding:clamp(24px,2.6vw,38px);min-height:262px;display:flex;flex-direction:column}
+  .card svg{margin-bottom:auto}
+  .card h3{font-size:1.02rem;margin:32px 0 10px}
+  .card p{font-size:14px;color:var(--muted);line-height:1.6}
+  .card .inc{margin-top:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);opacity:.75}
+
+  .statement{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(30px,5vw,70px);align-items:end}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(23,26,28,.16);margin-top:clamp(46px,6vw,78px)}
+  .stat{background:var(--concrete);padding:clamp(22px,3vw,34px)}
+  .stat .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-dark)}
+  .stat .v{font-size:clamp(2rem,4.2vw,3.4rem);font-weight:800;letter-spacing:-.045em;line-height:1;margin-top:12px}
+  .stat .v small{font-size:.33em;font-weight:600;letter-spacing:.02em;color:var(--muted-dark);margin-left:5px}
+
+  .faq{max-width:860px;margin-top:clamp(36px,5vw,58px);border-top:1px solid rgba(23,26,28,.18)}
+  details{border-bottom:1px solid rgba(23,26,28,.18)}
+  summary{list-style:none;cursor:pointer;padding:26px 40px 26px 0;position:relative;font-size:clamp(1rem,1.85vw,1.3rem);font-weight:700;letter-spacing:-.02em}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"";position:absolute;right:6px;top:50%;width:11px;height:11px;margin-top:-6px;
+                border-right:1.5px solid #171a1c;border-bottom:1.5px solid #171a1c;transform:rotate(45deg);transition:transform .3s}
+  details[open] summary:after{transform:rotate(-135deg)}
+  details p{padding:0 0 26px;color:#474d51;font-size:15.5px;line-height:1.7;max-width:64ch}
+
+  #contact{min-height:84vh;min-height:88svh;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center}
+  #contact h2{max-width:15ch}
+  #contact .cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+  footer{border-top:1px solid rgba(223,226,228,.14);padding:26px var(--gut);display:flex;flex-wrap:wrap;
+         gap:14px 26px;align-items:center;background:rgba(21,24,27,.88);position:relative;z-index:3}
+  footer .mono{font-size:10px}
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--text)}
+  footer .sp{margin-left:auto}
+
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.25,1),transform .9s cubic-bezier(.2,.7,.25,1)}
+  .rv.in{opacity:1;transform:none}
+  a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--hivis);outline-offset:3px}
+
+  body.lit #hud,body.lit #ruler{opacity:0;transition:opacity .45s}
+  @media (max-width:1000px){ .grid4{grid-template-columns:repeat(2,1fr)} .statement{grid-template-columns:1fr} .stats{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:760px){
+    nav .links{display:none}
+    .grid4{grid-template-columns:1fr}
+    #hero{min-height:92vh;min-height:96svh;padding-bottom:170px}
+    #ruler{display:none}
+    #hud{left:20px;bottom:18px}
+    #bar{width:110px}
+    .card{min-height:190px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none;transition:none}
+    .tape .run{animation:none}
+    #gate .leaf{transition:opacity .4s}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="vig"></div>
+
+<div id="gate" aria-hidden="true">
+  <div class="leaf l"></div>
+  <div class="leaf r"></div>
+  <div class="sign">SITE ENTRANCE · PPE BEYOND THIS POINT</div>
+</div>
+
+<div id="hud" aria-hidden="true">
+  <div class="st" id="hud-stage">Site set-up</div>
+  <div class="rd">
+    <span>LEVEL <b id="hud-lvl">00</b></span>
+    <span>ELEV <b id="hud-elev">+0.00 m</b></span>
+    <span>PROG <b id="hud-prog">0%</b></span>
+  </div>
+  <div id="bar"><i id="bar-fill"></i></div>
+</div>
+
+<div id="ruler" aria-hidden="true">
+  <div class="ln"></div>
+  <div id="ticks"></div>
+  <div id="mk"><em>+0.0 m</em></div>
+</div>
+
+<nav id="nav">
+  <a class="logo" href="#hero">SETU<em>/</em>BUILDWORKS</a>
+  <div class="links">
+    <a href="#sequence">Sequence</a>
+    <a href="#capability">Capability</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a class="btn btn-p" href="#contact">Request a bid</a>
+</nav>
+
+<main>
+
+  <section id="hero" class="dark scrim">
+    <div class="eyebrow">Pune, Maharashtra &nbsp;/&nbsp; civil &amp; structural &nbsp;/&nbsp; since 2009</div>
+    <h1>We build the part that has to stay up.</h1>
+    <div class="row">
+      <p class="lede">RCC frame, envelope and fit-out for commercial and residential towers. We hold the slab cycle, we hand over on the date in the contract, and the snag list is closed before you see it.</p>
+      <div class="cta">
+        <a class="btn btn-p" href="#contact">Request a bid</a>
+        <a class="btn btn-g" href="#sequence">Watch it go up</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="tape"><div class="run" id="tape"></div></div>
+
+  <section id="sequence" class="dark scrim">
+    <div class="eyebrow rv">Build sequence</div>
+    <h2 class="rv" style="margin-top:22px;max-width:14ch">Ground to handover.</h2>
+    <div class="stages">
+      <div class="stage rv">
+        <div class="lv"><b>+0.00 m</b><i>Weeks 1–9</i></div>
+        <h3>Substructure</h3>
+        <p>Excavation, shoring and the raft. Everything under the ground floor is the part nobody photographs and the part that decides whether the rest of it behaves. Piles are load-tested before the raft is poured, not after.</p>
+        <div class="kit"><span>Piling rig</span><span>Raft · M35</span><span>Load tests</span></div>
+      </div>
+      <div class="stage rv">
+        <div class="lv"><b>+14.40 m</b><i>Weeks 10–34</i></div>
+        <h3>RCC frame</h3>
+        <p>Columns, beams and slabs on a seven-day cycle, floor after floor. The cycle is the whole schedule — hold it and the project lands, lose two days a floor and you have lost a month by the sixteenth.</p>
+        <div class="kit"><span>7-day slab cycle</span><span>Aluminium formwork</span><span>Tower crane</span></div>
+      </div>
+      <div class="stage rv">
+        <div class="lv"><b>+42.00 m</b><i>Weeks 28–48</i></div>
+        <h3>Envelope</h3>
+        <p>Cladding and glazing chase the frame from below while the top floors are still being cast. Panels are dry-fitted at the yard first, so nothing that reaches the hoist has to be cut on a scaffold at level twelve.</p>
+        <div class="kit"><span>Precast spandrels</span><span>Unitised glazing</span><span>Water test</span></div>
+      </div>
+      <div class="stage rv">
+        <div class="lv"><b>+57.60 m</b><i>Weeks 44–58</i></div>
+        <h3>Fit-out &amp; handover</h3>
+        <p>Services, finishes, commissioning and the snag list. The crane comes down, the hoarding comes down, and you get the drawings that match what was actually built rather than what was drawn.</p>
+        <div class="kit"><span>MEP commissioning</span><span>As-built drawings</span><span>5-yr structural</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capability" class="solid">
+    <div class="eyebrow rv">Capability</div>
+    <h2 class="rv" style="margin-top:22px;max-width:17ch">Four things we take on.</h2>
+    <div class="grid4">
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#f5c518" stroke-width="1.5"><path d="M4 28h24M8 28V14h16v14M12 14V8h8v6M16 8V4"/></svg>
+        <h3>Towers</h3>
+        <p>Residential and commercial towers to 30 floors. Frame, envelope and core delivered as one package with one programme.</p>
+        <div class="inc">G+30 · up to 45,000 m²</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#f5c518" stroke-width="1.5"><path d="M3 22h26M6 22V12l10-6 10 6v10"/><path d="M13 22v-6h6v6"/></svg>
+        <h3>Industrial</h3>
+        <p>Warehouses, plant buildings and clean-room shells. Pre-engineered steel or RCC, whichever the span and the budget actually want.</p>
+        <div class="inc">Spans to 42 m</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#f5c518" stroke-width="1.5"><path d="M4 26V6h10v20M18 26V13h10v13M4 26h24"/><path d="M7 11h4M7 16h4M21 18h4"/></svg>
+        <h3>Retrofit</h3>
+        <p>Structural strengthening, façade replacement and seismic retrofit on buildings that stay occupied while we work on them.</p>
+        <div class="inc">Occupied-site methods</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#f5c518" stroke-width="1.5"><path d="M16 3l12 7v12l-12 7-12-7V10z"/><path d="M16 16l12-6M16 16v13M16 16L4 10"/></svg>
+        <h3>Project management</h3>
+        <p>Where you already have a design team, we take the site: procurement, sub-contractors, safety and the programme.</p>
+        <div class="inc">PMC · design-build</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="light">
+    <div class="statement">
+      <div>
+        <div class="eyebrow rv">The argument</div>
+        <h2 class="rv" style="margin-top:22px">A programme is a promise about other people's money.</h2>
+      </div>
+      <p class="lede rv">Every week a tower runs late is a week of interest, rent and salaries paid for a building nobody can use. That is why we quote the cycle, not just the cost — and why we would rather lose a bid than win it on a date we cannot hold.</p>
+    </div>
+    <div class="stats">
+      <div class="stat rv"><div class="k">Built area</div><div class="v" data-count="1.4">0<small>million m²</small></div></div>
+      <div class="stat rv"><div class="k">Projects closed</div><div class="v" data-count="86">0</div></div>
+      <div class="stat rv"><div class="k">On-date handover</div><div class="v" data-count="94">0<small>%</small></div></div>
+      <div class="stat rv"><div class="k">Lost-time injuries</div><div class="v" data-count="0">0<small>this yr</small></div></div>
+    </div>
+  </section>
+
+  <section id="faq" class="light">
+    <div class="eyebrow rv">Questions</div>
+    <h2 class="rv" style="margin-top:22px;max-width:15ch">Straight answers.</h2>
+    <div class="faq rv">
+      <details open>
+        <summary>How do you price a job?</summary>
+        <p>Item rate against a measured bill for defined scopes, or a lump sum where the design is frozen. Either way you get the rate build-up — material, labour, plant and margin shown separately — so a variation later is arithmetic instead of an argument.</p>
+      </details>
+      <details>
+        <summary>What happens if the programme slips?</summary>
+        <p>You get told in the weekly report the week it happens, with the recovery plan attached. Delay damages sit in our contracts because we would rather carry that risk than manage a client who has stopped believing the dates.</p>
+      </details>
+      <details>
+        <summary>Do you work on occupied buildings?</summary>
+        <p>Yes — retrofit and façade replacement with the building running. That means night pours, dust and noise windows agreed with the residents in advance, and a separate site access that never crosses the occupied lobby.</p>
+      </details>
+      <details>
+        <summary>Who is liable after handover?</summary>
+        <p>Structural work carries a five-year defect liability, waterproofing three, and MEP one year from commissioning. Retention is released against a closed snag list, not against a date.</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="contact" class="dark">
+    <div class="eyebrow rv" style="justify-content:center">Bids &amp; enquiries</div>
+    <h2 class="rv" style="margin-top:24px">Send us the drawings and the date.</h2>
+    <div class="cta rv">
+      <a class="btn btn-p" href="mailto:bids@example.com?subject=Bid%20enquiry">bids@example.com</a>
+      <a class="btn btn-g" href="tel:+910000000000">+91 00000 00000</a>
+    </div>
+    <div class="mono rv" style="margin-top:22px">Tenders returned in 10 working days &nbsp;·&nbsp; site visits any weekday</div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="logo" style="font-size:11px">SETU<em>/</em>BUILDWORKS</span>
+  <span class="mono">Civil &amp; structural · Pune</span>
+  <span class="mono sp"><a href="mailto:bids@example.com">bids@example.com</a></span>
+  <span class="mono">© 2026</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function lerp(a,b,t){ return a+(b-a)*t; }
+function ease(t){ return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
+function smooth(t){ return t*t*(3-2*t); }
+function seg(p,a,b){ return clamp((p-a)/(b-a),0,1); }
+function mulberry(a){
+  return function(){
+    a|=0; a=a+0x6D2B79F5|0;
+    var t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+
+/* ---------- gate ---------- */
+setTimeout(function(){ document.body.classList.add('open'); }, reduce?60:560);
+
+/* ---------- tape + reveals + counters ---------- */
+(function(){
+  var items=['RCC frame','Precast envelope','7-day slab cycle','Design–build','Retrofit','Zero LTI','Pune · Maharashtra','Handover on date'];
+  var h='';
+  for (var r=0;r<2;r++) for (var i=0;i<items.length;i++) h+='<span><b>◆</b> '+items[i]+'</span>';
+  document.getElementById('tape').innerHTML=h;
+})();
+
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(!e.isIntersecting) return;
+    e.target.classList.add('in'); io.unobserve(e.target);
+    var c=e.target.querySelector('[data-count]'); if(c) countUp(c);
+  });
+},{threshold:0.18, rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(el,i){
+  el.style.transitionDelay=(i%4)*0.07+'s'; io.observe(el);
+});
+function countUp(el){
+  var target=parseFloat(el.getAttribute('data-count'));
+  var dec=(target%1!==0)?1:0;
+  var sm=el.querySelector('small'), tail=sm?sm.outerHTML:'';
+  if (reduce){ el.innerHTML=target.toFixed(dec)+tail; return; }
+  var t0=performance.now();
+  (function step(now){
+    var p=clamp((now-t0)/1100,0,1);
+    el.innerHTML=(target*ease(p)).toFixed(dec)+tail;
+    if(p<1) requestAnimationFrame(step);
+  })(performance.now());
+}
+/* hide the site readout while a pale section owns the screen */
+(function(){
+  var lights=Array.prototype.slice.call(document.querySelectorAll('.light'));
+  if (!lights.length) return;
+  var lio=new IntersectionObserver(function(es){
+    es.forEach(function(e){ e.target.dataset.vis = e.intersectionRatio>0.45 ? '1' : '0'; });
+    var any=false;
+    for (var i=0;i<lights.length;i++) if (lights[i].dataset.vis==='1'){ any=true; break; }
+    document.body.classList.toggle('lit', any);
+  },{threshold:[0,0.2,0.45,0.7,1]});
+  lights.forEach(function(l){ lio.observe(l); });
+})();
+
+var nav=document.getElementById('nav');
+function navState(){ nav.classList.toggle('stuck', window.scrollY>40); }
+navState();
+window.addEventListener('scroll', navState, {passive:true});
+
+/* ---------- elevation ruler ticks ---------- */
+var FLOORS=16, FH=3.6, TOP=FLOORS*FH;
+(function(){
+  var box=document.getElementById('ticks'), h='';
+  for (var m=0;m<=60;m+=5){
+    var maj=(m%15===0);
+    h+='<div class="tk'+(maj?' maj':'')+'" style="bottom:'+(m/60*100)+'%">'+(maj?'<em>+'+m+'</em>':'')+'</div>';
+  }
+  box.innerHTML=h;
+})();
+
+var STAGES=[
+  {p:0.00,name:'Site set-up'},
+  {p:0.05,name:'Substructure'},
+  {p:0.12,name:'RCC frame'},
+  {p:0.46,name:'Envelope'},
+  {p:0.66,name:'Glazing'},
+  {p:0.82,name:'Fit-out'},
+  {p:0.94,name:'Handover'}
+];
+var elStage=document.getElementById('hud-stage'), elLvl=document.getElementById('hud-lvl'),
+    elElev=document.getElementById('hud-elev'), elProg=document.getElementById('hud-prog'),
+    elBar=document.getElementById('bar-fill'), elMk=document.getElementById('mk');
+
+function updateHUD(p, floorsBuilt){
+  var name=STAGES[0].name;
+  for (var i=0;i<STAGES.length;i++) if (p>=STAGES[i].p) name=STAGES[i].name;
+  var lv=Math.min(FLOORS, Math.floor(floorsBuilt));
+  var elev=lv*FH;
+  elStage.textContent=name;
+  elLvl.textContent=(lv<10?'0':'')+lv;
+  elElev.textContent='+'+elev.toFixed(2)+' m';
+  elProg.textContent=Math.round(p*100)+'%';
+  elBar.style.width=(p*100)+'%';
+  elMk.style.bottom=clamp(elev/60*100,0,100)+'%';
+  elMk.firstChild.textContent='+'+elev.toFixed(1)+' m';
+}
+
+/* ================================================================
+   3D SITE
+   ================================================================ */
+function init3D(){
+var canvas=document.getElementById('gl');
+var renderer=new THREE.WebGLRenderer({canvas:canvas, antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+var scene=new THREE.Scene();
+var SKY_DAY=new THREE.Color(0x9fb3c0), SKY_DUSK=new THREE.Color(0x1d2634);
+scene.background=SKY_DAY.clone();
+scene.fog=new THREE.Fog(0x9fb3c0, 90, 460);
+var camera=new THREE.PerspectiveCamera(40,1,0.5,1200);
+
+var hemi=new THREE.HemisphereLight(0xcfe2ef,0x4a4740,0.85); scene.add(hemi);
+var sun=new THREE.DirectionalLight(0xfff2df,2.2);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.bias=-0.0006; sun.shadow.normalBias=0.06;
+var sc=sun.shadow.camera;
+sc.left=-80; sc.right=80; sc.top=90; sc.bottom=-40; sc.near=1; sc.far=460;
+sc.updateProjectionMatrix();
+scene.add(sun); scene.add(sun.target);
+
+var W=22, D=16, R=mulberry(77);
+
+/* ---------- ground ---------- */
+function dirtTex(){
+  var c=document.createElement('canvas'); c.width=c.height=512;
+  var g=c.getContext('2d');
+  g.fillStyle='#6b6255'; g.fillRect(0,0,512,512);
+  for (var i=0;i<2400;i++){
+    g.fillStyle='rgba('+(90+Math.random()*70|0)+','+(82+Math.random()*60|0)+','+(70+Math.random()*50|0)+',0.55)';
+    g.fillRect(Math.random()*512,Math.random()*512,2+Math.random()*7,2+Math.random()*7);
+  }
+  for (var t=0;t<26;t++){
+    g.strokeStyle='rgba(60,54,46,0.35)'; g.lineWidth=2+Math.random()*5;
+    g.beginPath(); g.moveTo(Math.random()*512,0); g.bezierCurveTo(Math.random()*512,170,Math.random()*512,340,Math.random()*512,512); g.stroke();
+  }
+  var tx=new THREE.CanvasTexture(c);
+  tx.wrapS=tx.wrapT=THREE.RepeatWrapping; tx.repeat.set(14,14);
+  tx.encoding=THREE.sRGBEncoding;
+  return tx;
+}
+var ground=new THREE.Mesh(new THREE.PlaneGeometry(900,900),
+  new THREE.MeshStandardMaterial({map:dirtTex(),roughness:1,metalness:0}));
+ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+
+/* ---------- excavation ---------- */
+var pit=new THREE.Mesh(new THREE.BoxGeometry(W+9,7,D+9),
+  new THREE.MeshStandardMaterial({color:0x4a4339,roughness:1}));
+pit.position.y=-3.5; pit.receiveShadow=true; scene.add(pit);
+var rebar=(function(){
+  var pts=[], hw=(W+4)/2, hd=(D+4)/2;
+  for (var x=-hw;x<=hw;x+=1.6){ pts.push(x,0.35,-hd, x,0.35,hd); }
+  for (var z=-hd;z<=hd;z+=1.6){ pts.push(-hw,0.35,z, hw,0.35,z); }
+  var g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
+  var l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0x8a6a4a,transparent:true,opacity:0.9}));
+  scene.add(l); return l;
+})();
+
+/* ---------- structure (instanced) ---------- */
+function inst(geo,m,n,shadow){
+  var x=new THREE.InstancedMesh(geo,m,n);
+  x.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  x.frustumCulled=false; x.count=0;
+  if (shadow){ x.castShadow=true; x.receiveShadow=true; }
+  scene.add(x); return x;
+}
+var matConc=new THREE.MeshStandardMaterial({color:0xb9b4aa,roughness:0.92,metalness:0.02});
+var matCol =new THREE.MeshStandardMaterial({color:0xa9a49a,roughness:0.9,metalness:0.02});
+var matSpan=new THREE.MeshStandardMaterial({color:0xd6d2c9,roughness:0.75,metalness:0.05});
+var matGlass=new THREE.MeshStandardMaterial({
+  color:0x22323c, roughness:0.12, metalness:0.85,
+  emissive:0xffcf8a, emissiveIntensity:0
+});
+
+var iSlab =inst(new THREE.BoxGeometry(W,0.42,D), matConc, FLOORS, true);
+var iCol  =inst(new THREE.BoxGeometry(0.78,1,0.78), matCol, FLOORS*4, true);
+var iSpanW=inst(new THREE.BoxGeometry(W+0.5,1,0.4), matSpan, FLOORS*2, true);
+var iSpanD=inst(new THREE.BoxGeometry(0.4,1,D+0.5), matSpan, FLOORS*2, true);
+var iGlasW=inst(new THREE.BoxGeometry(W-0.6,1,0.24), matGlass, FLOORS*2, false);
+var iGlasD=inst(new THREE.BoxGeometry(0.24,1,D-0.6), matGlass, FLOORS*2, false);
+
+var _m=new THREE.Matrix4(), _p=new THREE.Vector3(), _q=new THREE.Quaternion(), _s=new THREE.Vector3();
+function put(mesh,i,x,y,z,sx,sy,sz){ _p.set(x,y,z); _s.set(sx,sy,sz); _m.compose(_p,_q,_s); mesh.setMatrixAt(i,_m); }
+
+/* ---------- tower crane ---------- */
+var crane=new THREE.Group(); scene.add(crane);
+var matSteel=new THREE.MeshStandardMaterial({color:0xf0c53a,roughness:0.55,metalness:0.35});
+var matDark =new THREE.MeshStandardMaterial({color:0x3a3f45,roughness:0.7,metalness:0.4});
+var CRANE_H=TOP+16;
+(function(){
+  var mast=new THREE.Mesh(new THREE.BoxGeometry(1.5,CRANE_H,1.5),matSteel);
+  mast.position.y=CRANE_H/2; mast.castShadow=true; crane.add(mast);
+  for (var y=3;y<CRANE_H;y+=3){
+    var br=new THREE.Mesh(new THREE.BoxGeometry(1.9,0.16,1.9),matSteel);
+    br.position.y=y; crane.add(br);
+  }
+  var base=new THREE.Mesh(new THREE.BoxGeometry(5,1,5),matConc);
+  base.position.y=0.5; base.castShadow=true; base.receiveShadow=true; crane.add(base);
+})();
+var jib=new THREE.Group(); jib.position.y=CRANE_H; crane.add(jib);
+(function(){
+  var arm=new THREE.Mesh(new THREE.BoxGeometry(46,1.1,1.1),matSteel);
+  arm.position.x=17; arm.castShadow=true; jib.add(arm);
+  var counter=new THREE.Mesh(new THREE.BoxGeometry(5,2.2,2.4),matDark);
+  counter.position.x=-8.5; counter.castShadow=true; jib.add(counter);
+  var cabin=new THREE.Mesh(new THREE.BoxGeometry(2.6,2.2,2.2),matDark);
+  cabin.position.set(1.6,-1.4,0); cabin.castShadow=true; jib.add(cabin);
+  var apex=new THREE.Mesh(new THREE.BoxGeometry(0.6,7,0.6),matSteel);
+  apex.position.y=3.5; jib.add(apex);
+})();
+var cable=new THREE.Mesh(new THREE.BoxGeometry(0.1,1,0.1),matDark);
+cable.position.set(24,0,0); jib.add(cable);
+var hook=new THREE.Mesh(new THREE.BoxGeometry(1.6,1.1,1.6),matDark);
+hook.castShadow=true; jib.add(hook);
+
+/* ---------- scaffold ---------- */
+var scaffold=(function(){
+  var pts=[], x=W/2+1.1;
+  for (var z=-D/2;z<=D/2;z+=2.6){ pts.push(x,0,z, x,1,z); }
+  for (var h=0;h<=1;h+=0.08){ pts.push(x,h,-D/2, x,h,D/2); }
+  var g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
+  var l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0x6e88a0,transparent:true,opacity:0.85}));
+  scene.add(l); return l;
+})();
+
+/* ---------- site kit: hoarding, huts, stacks, workers ---------- */
+(function(){
+  var hoard=new THREE.Group(); scene.add(hoard);
+  var stripe=(function(){
+    var c=document.createElement('canvas'); c.width=128; c.height=32;
+    var g=c.getContext('2d');
+    g.fillStyle='#20252a'; g.fillRect(0,0,128,32);
+    g.fillStyle='#f5c518';
+    for (var i=-32;i<128;i+=24){ g.beginPath(); g.moveTo(i,0); g.lineTo(i+12,0); g.lineTo(i+12+18,32); g.lineTo(i+18,32); g.fill(); }
+    var t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(6,1);
+    t.encoding=THREE.sRGBEncoding; return t;
+  })();
+  var hm=new THREE.MeshStandardMaterial({map:stripe,roughness:0.9});
+  var hw=W/2+22, hd=D/2+20;
+  [[0,hd,W+44,0],[0,-hd,W+44,0],[hw,0,D+40,Math.PI/2],[-hw,0,D+40,Math.PI/2]].forEach(function(s){
+    var m=new THREE.Mesh(new THREE.BoxGeometry(s[2],2.6,0.3),hm);
+    m.position.set(s[0],1.3,s[1]); m.rotation.y=s[3];
+    m.castShadow=true; m.receiveShadow=true; hoard.add(m);
+  });
+
+  var hutM=new THREE.MeshStandardMaterial({color:0xdfe3e5,roughness:0.7,metalness:0.15});
+  for (var i=0;i<3;i++){
+    var hut=new THREE.Mesh(new THREE.BoxGeometry(7,3,3.2),hutM);
+    hut.position.set(-W/2-16, 1.5+ (i===2?3:0), -D/2+2+i*5);
+    hut.castShadow=true; hut.receiveShadow=true; scene.add(hut);
+  }
+  var stackM=new THREE.MeshStandardMaterial({color:0x8d8a82,roughness:1});
+  for (var s2=0;s2<6;s2++){
+    var st=new THREE.Mesh(new THREE.BoxGeometry(3+R()*3,1+R()*1.6,2.4+R()*2),stackM);
+    st.position.set(W/2+8+R()*10, 0.7, -D/2+R()*(D+8));
+    st.rotation.y=R()*1.4; st.castShadow=true; st.receiveShadow=true; scene.add(st);
+  }
+  var vestM=new THREE.MeshStandardMaterial({color:0xf5c518,roughness:0.8,emissive:0x4a3c00,emissiveIntensity:0.2});
+  var headM=new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.6});
+  for (var w=0;w<5;w++){
+    var g2=new THREE.Group();
+    var body=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.28,1.15,8),vestM);
+    body.position.y=1.05; body.castShadow=true;
+    var head=new THREE.Mesh(new THREE.SphereGeometry(0.19,10,8),headM);
+    head.position.y=1.78; head.castShadow=true;
+    var legs=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.14,0.95,6),matDark);
+    legs.position.y=0.47; legs.castShadow=true;
+    g2.add(body); g2.add(head); g2.add(legs);
+    g2.position.set(-W/2-4+R()*(W+8), 0, D/2+3+R()*9);
+    scene.add(g2);
+  }
+})();
+
+/* ---------- dust ---------- */
+(function(){
+  var n=420, pos=new Float32Array(n*3);
+  for (var i=0;i<n;i++){
+    pos[i*3]=(Math.random()-0.5)*140;
+    pos[i*3+1]=Math.random()*70;
+    pos[i*3+2]=(Math.random()-0.5)*140;
+  }
+  var g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xd8d0c0,size:0.22,transparent:true,opacity:0.32,depthWrite:false})));
+})();
+
+/* ---------- camera path ---------- */
+var KEYS=[
+  {p:0.00, r:96,  th:0.75, ph:1.28, ty:5},
+  {p:0.16, r:104, th:1.25, ph:1.16, ty:16},
+  {p:0.40, r:88,  th:1.95, ph:1.12, ty:30},
+  {p:0.58, r:52,  th:2.55, ph:1.30, ty:26},
+  {p:0.74, r:46,  th:3.10, ph:1.44, ty:20},
+  {p:0.90, r:120, th:3.75, ph:1.10, ty:32},
+  {p:1.00, r:142, th:4.05, ph:1.04, ty:30}
+];
+var cam={r:96,th:0.75,ph:1.28,ty:5}, want={r:96,th:0.75,ph:1.28,ty:5};
+var mx=0,my=0,tmx=0,tmy=0,fitK=1;
+
+function progress(){
+  var max=document.body.scrollHeight-window.innerHeight;
+  return max>0?clamp(window.scrollY/max,0,1):0;
+}
+function sample(p){
+  var a=KEYS[0], b=KEYS[KEYS.length-1];
+  for (var i=0;i<KEYS.length-1;i++){
+    if (p>=KEYS[i].p && p<=KEYS[i+1].p){ a=KEYS[i]; b=KEYS[i+1]; break; }
+  }
+  var t=ease(clamp((p-a.p)/Math.max(b.p-a.p,1e-6),0,1));
+  want.r=lerp(a.r,b.r,t)*fitK; want.th=lerp(a.th,b.th,t);
+  want.ph=lerp(a.ph,b.ph,t);   want.ty=lerp(a.ty,b.ty,t);
+}
+window.addEventListener('pointermove', function(e){
+  tmx=e.clientX/window.innerWidth-0.5;
+  tmy=e.clientY/window.innerHeight-0.5;
+});
+function resize(){
+  var w=window.innerWidth, h=window.innerHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+  fitK=clamp(1.75/(w/h),1,1.85);
+}
+window.addEventListener('resize',resize); resize();
+
+/* ---------- build ---------- */
+function buildTo(p, t){
+  var frameF=seg(p,0.10,0.46)*FLOORS;
+  var cladF =seg(p,0.44,0.68)*FLOORS;
+  var glasF =seg(p,0.60,0.84)*FLOORS;
+  var night =seg(p,0.72,0.96);
+
+  /* pit + rebar disappear as the frame starts */
+  var pitFade=1-seg(p,0.08,0.16);
+  pit.visible=pitFade>0.02;
+  pit.scale.y=Math.max(0.02,pitFade);
+  pit.position.y=-3.5*pitFade;
+  rebar.visible=pitFade>0.05;
+  rebar.material.opacity=0.9*pitFade;
+
+  var ns=0,nc=0,nsw=0,nsd=0,ngw=0,ngd=0, i;
+  for (i=0;i<FLOORS;i++){
+    var f=clamp(frameF-i,0,1);
+    if (f>0){
+      var e=ease(f);
+      var y=i*FH+FH;
+      put(iSlab,ns++, 0, lerp(y+7,y,e), 0, 1, Math.max(e,0.02), 1);
+      var hx=W/2-1.2, hz=D/2-1.2;
+      [[hx,hz],[-hx,hz],[hx,-hz],[-hx,-hz]].forEach(function(c){
+        put(iCol,nc++, c[0], i*FH+FH*e/2, c[1], 1, Math.max(FH*e,0.02), 1);
+      });
+    }
+    var cl=clamp(cladF-i,0,1);
+    if (cl>0){
+      var ce=ease(cl), sy=Math.max(1.35*ce,0.02), syY=i*FH+FH-0.6;
+      put(iSpanW,nsw++, 0, syY, D/2+0.2, 1, sy, 1);
+      put(iSpanW,nsw++, 0, syY, -D/2-0.2, 1, sy, 1);
+      put(iSpanD,nsd++, W/2+0.2, syY, 0, 1, sy, 1);
+      put(iSpanD,nsd++, -W/2-0.2, syY, 0, 1, sy, 1);
+    }
+    var gl=clamp(glasF-i,0,1);
+    if (gl>0){
+      var ge=ease(gl), gy=Math.max((FH-1.5)*ge,0.02), gyY=i*FH+FH*0.42;
+      put(iGlasW,ngw++, 0, gyY, D/2+0.16, 1, gy, 1);
+      put(iGlasW,ngw++, 0, gyY, -D/2-0.16, 1, gy, 1);
+      put(iGlasD,ngd++, W/2+0.16, gyY, 0, 1, gy, 1);
+      put(iGlasD,ngd++, -W/2-0.16, gyY, 0, 1, gy, 1);
+    }
+  }
+  iSlab.count=ns; iCol.count=nc; iSpanW.count=nsw; iSpanD.count=nsd; iGlasW.count=ngw; iGlasD.count=ngd;
+  [iSlab,iCol,iSpanW,iSpanD,iGlasW,iGlasD].forEach(function(m){ m.instanceMatrix.needsUpdate=true; });
+
+  matGlass.emissiveIntensity=night*1.15;
+
+  /* scaffold follows the cladding gang */
+  var scH=clamp(cladF,0,FLOORS)*FH+2;
+  scaffold.scale.y=Math.max(scH,0.01);
+  scaffold.visible=cladF>0.05 && p<0.86;
+  scaffold.material.opacity=0.85*(1-seg(p,0.78,0.88));
+
+  /* crane: slews, lifts with the frame, then comes down */
+  var down=seg(p,0.84,0.95);
+  crane.visible=down<0.99;
+  crane.scale.setScalar(Math.max(1-down,0.001));
+  crane.position.set(-W/2-11,0,-D/2-9);
+  if (!reduce) jib.rotation.y=t*0.11+p*2.4; else jib.rotation.y=p*2.4;
+  var hookY=-clamp(CRANE_H-(clamp(frameF,0,FLOORS)*FH+6),4,CRANE_H-4);
+  hook.position.set(24,hookY,0);
+  cable.position.set(24,hookY/2,0);
+  cable.scale.y=Math.abs(hookY);
+
+  /* day into dusk */
+  var az=lerp(-0.7,2.3,night*0.85+p*0.15), el=lerp(0.95,0.10,night);
+  sun.position.set(Math.cos(az)*160*Math.cos(el), Math.sin(el)*180+8, Math.sin(az)*160*Math.cos(el));
+  sun.target.position.set(0,TOP*0.4,0); sun.target.updateMatrixWorld();
+  sun.intensity=lerp(2.3,0.35,night);
+  sun.color.setHex(night>0.5?0xffb469:0xfff2df);
+  hemi.intensity=lerp(0.85,0.32,night);
+  hemi.color.setHex(night>0.6?0x40516b:0xcfe2ef);
+  var skyNow=SKY_DAY.clone().lerp(SKY_DUSK,night);
+  scene.background.copy(skyNow);
+  scene.fog.color.copy(skyNow);
+  renderer.toneMappingExposure=lerp(1.0,1.22,night);
+
+  updateHUD(p, clamp(frameF,0,FLOORS));
+}
+
+var t0=performance.now();
+function frame(now){
+  var dt=Math.min(now-t0,120); t0=now;
+  var time=now*0.001;
+  var p=progress();
+
+  sample(p);
+  buildTo(p,time);
+
+  var k=reduce?1:clamp(dt/1000*4,0,1);
+  cam.r=lerp(cam.r,want.r,k); cam.th=lerp(cam.th,want.th,k);
+  cam.ph=lerp(cam.ph,want.ph,k); cam.ty=lerp(cam.ty,want.ty,k);
+  mx=lerp(mx,tmx,0.05); my=lerp(my,tmy,0.05);
+
+  var th=cam.th+mx*0.20, ph=clamp(cam.ph+my*0.10,0.15,1.50);
+  camera.position.set(
+    cam.r*Math.sin(ph)*Math.sin(th),
+    Math.max(cam.ty+cam.r*Math.cos(ph)*0.55+14, 3),
+    cam.r*Math.sin(ph)*Math.cos(th)
+  );
+  camera.lookAt(0,cam.ty,0);
+  renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+}
+
+try {
+  if (typeof THREE === 'undefined') throw new Error('three.js unavailable');
+  init3D();
+} catch (err) {
+  document.body.classList.add('no3d');
+}
+
+})();
+</script>
+</body>
+</html>

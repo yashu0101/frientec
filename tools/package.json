@@ -1,0 +1,4 @@
+{
+  "//": "The root package is an ES module; these two generators are CommonJS. This file scopes that back for the tools directory so `node tools/make-images.js` still works.",
+  "type": "commonjs"
+}

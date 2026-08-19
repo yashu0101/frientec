@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rane &amp; Khosla — Advocates &amp; Solicitors, Pune</title>
+<meta name="description" content="Commercial advisory, disputes, real estate and employment law. Pune.">
+<meta name="theme-color" content="#0b0e14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 32 32&quot;%3E%3Crect width=&quot;32&quot; height=&quot;32&quot; fill=&quot;%230b0e14&quot;/%3E%3Cpath d=&quot;M16 5v22M8 11h16M10 11l-4 8h8zM22 11l-4 8h8z&quot; fill=&quot;none&quot; stroke=&quot;%23b08a4a&quot; stroke-width=&quot;1.8&quot;/%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#0b0e14; --ink-2:#121722; --panel:#182031;
+    --vellum:#efeae0; --vellum-2:#e3ddd0;
+    --brass:#b08a4a; --oxblood:#8c2f39;
+    --text:#dcd9d2; --muted:#8b8f9a; --muted-dark:#5d616b;
+    --serif:ui-serif,Charter,"Bitstream Charter","Iowan Old Style",Georgia,"Times New Roman",serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --gut:clamp(20px,5vw,72px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{background:var(--ink);color:var(--text);font-family:var(--sans);line-height:1.5;overflow-x:hidden}
+  ::selection{background:var(--brass);color:#0b0e14}
+
+  #gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+  body.no3d{background:radial-gradient(115% 80% at 58% 22%,#1d2434,#0b0e14 62%)}
+  body.no3d #gl{display:none}
+  #prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:30;
+        background:linear-gradient(90deg,#6b5326,var(--brass));box-shadow:0 0 12px rgba(176,138,74,.5);pointer-events:none}
+  #vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+       background:radial-gradient(115% 88% at 50% 44%,rgba(11,14,20,0) 44%,rgba(11,14,20,.82) 100%)}
+  main{position:relative;z-index:3}
+
+  #load{position:fixed;inset:0;z-index:60;background:var(--ink);display:grid;place-items:center;
+        transition:opacity .7s ease,visibility 0s .7s}
+  body.open #load{opacity:0;visibility:hidden}
+  #load .seal{width:74px;height:74px;border:1px solid var(--brass);border-radius:50%;display:grid;place-items:center;
+              transform:scale(.7);opacity:0;animation:press 1.3s cubic-bezier(.5,0,.2,1) forwards}
+  #load .seal i{width:44px;height:44px;border:1px solid rgba(176,138,74,.55);border-radius:50%}
+  @keyframes press{0%{transform:scale(1.5);opacity:0}55%{transform:scale(.92);opacity:1}100%{transform:scale(1);opacity:1}}
+  #load .lbl{margin-top:20px;font-family:var(--mono);font-size:9.5px;letter-spacing:.34em;color:var(--muted);text-align:center}
+
+  #hud{position:fixed;left:var(--gut);bottom:26px;z-index:12;pointer-events:none;
+       border-left:2px solid var(--brass);padding:2px 0 2px 12px;opacity:0;transition:opacity .6s .3s}
+  body.open #hud{opacity:1}
+  #hud .st{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--brass)}
+  #hud .rd{display:flex;gap:16px;margin-top:7px;flex-wrap:wrap}
+  #hud .rd span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);white-space:nowrap}
+  #hud .rd b{color:var(--text);font-weight:400}
+  #bar{width:150px;height:2px;background:rgba(139,143,154,.3);margin-top:10px}
+  #bar i{display:block;height:100%;width:0;background:var(--brass)}
+
+  #rail{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:12;pointer-events:none;
+        opacity:0;transition:opacity .6s .4s;text-align:right}
+  body.open #rail{opacity:1}
+  #rail .stp{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;
+             color:var(--muted);opacity:.45;padding:9px 0;transition:opacity .35s,color .35s;position:relative}
+  #rail .stp:after{content:"";position:absolute;right:-10px;top:50%;width:5px;height:1px;background:var(--muted);opacity:.5}
+  #rail .stp.on{opacity:1;color:var(--brass)}
+  #rail .stp.on:after{background:var(--brass);width:14px;right:-18px}
+
+  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:11px}
+  .eyebrow:before{content:"";width:24px;height:1px;background:var(--brass);flex:none}
+  h1{font-family:var(--serif);font-size:clamp(2.4rem,7.2vw,6.2rem);line-height:1.0;letter-spacing:-.025em;font-weight:600;text-wrap:balance}
+  h2{font-family:var(--serif);font-size:clamp(1.8rem,4.6vw,3.7rem);line-height:1.08;letter-spacing:-.02em;font-weight:600;text-wrap:balance}
+  h3{font-family:var(--serif);font-size:clamp(1.2rem,2.1vw,1.6rem);line-height:1.2;font-weight:600}
+  p.lede{font-size:clamp(1rem,1.5vw,1.18rem);color:var(--muted);max-width:46ch;line-height:1.68}
+  .mono{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .br{color:var(--brass)}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:18px;
+      padding:16px var(--gut);border-bottom:1px solid transparent;transition:background .4s,backdrop-filter .4s,border-color .4s}
+  nav.stuck{background:rgba(11,14,20,.78);backdrop-filter:blur(14px);border-bottom-color:rgba(220,217,210,.13)}
+  .logo{font-family:var(--serif);font-size:15px;letter-spacing:.04em;font-weight:600;color:var(--text);text-decoration:none}
+  .logo em{font-style:normal;color:var(--brass)}
+  nav .links{display:flex;gap:26px;margin-left:auto}
+  nav .links a{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s}
+  nav .links a:hover{color:var(--text)}
+
+  .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+       text-transform:uppercase;padding:14px 22px;text-decoration:none;border:1px solid transparent;cursor:pointer;
+       white-space:nowrap;position:relative;overflow:hidden;isolation:isolate;transition:.28s}
+  .btn:before{content:"";position:absolute;inset:0;z-index:-1;transform:translateY(101%);transition:transform .38s cubic-bezier(.3,.7,.25,1)}
+  .btn-p{background:var(--brass);color:#0b0e14;font-weight:700}
+  .btn-p:before{background:#c9a161}
+  .btn-p:hover{transform:translateY(-2px)}
+  .btn-p:hover:before{transform:translateY(0)}
+  .btn-g{border-color:rgba(220,217,210,.28);color:var(--text)}
+  .btn-g:before{background:rgba(176,138,74,.16)}
+  .btn-g:hover{border-color:var(--brass);color:var(--brass)}
+  .btn-g:hover:before{transform:translateY(0)}
+  .btn-dark{background:var(--ink);color:var(--vellum);font-weight:700}
+  nav .btn{padding:11px 16px}
+
+  section{padding:clamp(80px,11vw,168px) var(--gut);position:relative}
+  .dark{background:transparent}
+  .solid{background:var(--ink-2)}
+  .light{background:var(--vellum);color:#15171c}
+  .light .mono,.light .eyebrow{color:var(--muted-dark)}
+  .light p.lede{color:#4a4d55}
+  .scrim:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(100deg,rgba(11,14,20,.95) 0%,rgba(11,14,20,.84) 30%,rgba(11,14,20,.34) 58%,transparent 78%)}
+
+  #hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:118px;padding-bottom:150px}
+  #hero h1{margin:26px 0 0;max-width:14ch}
+  #hero .row{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-end;margin-top:34px}
+  #hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  #cue{position:absolute;right:var(--gut);bottom:38px;display:flex;align-items:center;gap:10px;pointer-events:none;transition:opacity .6s}
+  #cue span{font-family:var(--mono);font-size:9px;letter-spacing:.3em;color:var(--muted)}
+  #cue i{display:block;width:1px;height:28px;background:linear-gradient(var(--brass),transparent);animation:fall 2s ease-in-out infinite}
+  @keyframes fall{0%{transform:translateY(-9px);opacity:0}40%{opacity:1}100%{transform:translateY(9px);opacity:0}}
+  body.scrolled #cue{opacity:0}
+
+  .tape{overflow:hidden;border-top:1px solid rgba(220,217,210,.14);border-bottom:1px solid rgba(220,217,210,.14);
+        padding:15px 0;background:rgba(11,14,20,.72);backdrop-filter:blur(6px)}
+  .tape .run{display:flex;gap:48px;white-space:nowrap;animation:slide 34s linear infinite;will-change:transform}
+  .tape span{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+  .tape span b{color:var(--brass);font-weight:400}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  #matter{padding-top:clamp(60px,8vw,110px)}
+  .steps{max-width:530px}
+  .step{padding:clamp(38px,6.5vw,86px) 0;border-top:1px solid rgba(220,217,210,.14)}
+  .step .cl{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+  .step .cl b{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--brass);font-weight:400}
+  .step .cl i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);opacity:.7}
+  .step h3{margin-bottom:12px}
+  .step p{color:var(--muted);font-size:15.5px;line-height:1.68;max-width:42ch}
+  .step .kit{margin-top:16px;display:flex;gap:16px;flex-wrap:wrap}
+  .step .kit span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.72}
+  .step .kit span:before{content:"§ ";color:var(--brass)}
+
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(220,217,210,.15);
+         border:1px solid rgba(220,217,210,.15);margin-top:clamp(40px,6vw,72px)}
+  .card{background:var(--panel);padding:clamp(24px,2.6vw,38px);min-height:266px;display:flex;flex-direction:column}
+  .card svg{margin-bottom:auto}
+  .card h3{font-size:1.12rem;margin:32px 0 10px}
+  .card p{font-size:14px;color:var(--muted);line-height:1.62}
+  .card .inc{margin-top:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);opacity:.72}
+
+  .statement{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(30px,5vw,70px);align-items:end}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(21,23,28,.15);margin-top:clamp(46px,6vw,78px)}
+  .stat{background:var(--vellum);padding:clamp(22px,3vw,34px)}
+  .stat .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-dark)}
+  .stat .v{font-family:var(--serif);font-size:clamp(2rem,4.2vw,3.4rem);font-weight:600;letter-spacing:-.02em;line-height:1;margin-top:12px}
+  .stat .v small{font-family:var(--mono);font-size:.30em;font-weight:400;letter-spacing:.08em;color:var(--muted-dark);margin-left:6px}
+
+  .faq{max-width:880px;margin-top:clamp(36px,5vw,58px);border-top:1px solid rgba(21,23,28,.16)}
+  details{border-bottom:1px solid rgba(21,23,28,.16)}
+  summary{list-style:none;cursor:pointer;padding:26px 40px 26px 0;position:relative;
+          font-family:var(--serif);font-size:clamp(1.05rem,1.9vw,1.35rem);font-weight:600}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"";position:absolute;right:6px;top:50%;width:11px;height:11px;margin-top:-6px;
+                border-right:1.5px solid #15171c;border-bottom:1.5px solid #15171c;transform:rotate(45deg);transition:transform .3s}
+  details[open] summary:after{transform:rotate(-135deg)}
+  details p{padding:0 0 26px;color:#4a4d55;font-size:15.5px;line-height:1.72;max-width:66ch}
+
+  #contact{min-height:84vh;min-height:88svh;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center}
+  #contact h2{max-width:16ch}
+  #contact .cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+  footer{border-top:1px solid rgba(220,217,210,.14);padding:26px var(--gut);background:rgba(11,14,20,.9);position:relative;z-index:3}
+  footer .top{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center}
+  footer .mono{font-size:10px}
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--text)}
+  footer .sp{margin-left:auto}
+  .disc{margin-top:18px;padding-top:16px;border-top:1px solid rgba(220,217,210,.1);
+        font-size:11px;line-height:1.7;color:var(--muted-dark);max-width:92ch}
+
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.25,1),transform .9s cubic-bezier(.2,.7,.25,1)}
+  .rv.in{opacity:1;transform:none}
+  a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+  body.lit #hud,body.lit #rail{opacity:0;transition:opacity .45s}
+
+  @media (max-width:1000px){ .grid4{grid-template-columns:repeat(2,1fr)} .statement{grid-template-columns:1fr} .stats{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:760px){
+    nav .links{display:none}
+    .grid4{grid-template-columns:1fr}
+    #hero{min-height:92vh;min-height:96svh;padding-bottom:170px}
+    #rail,#cue{display:none}
+    #hud{left:20px;bottom:18px}
+    #bar{width:112px}
+    .card{min-height:200px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none;transition:none}
+    .tape .run,#cue i,#load .seal{animation:none;opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="prog"></div>
+<div id="vig"></div>
+
+<div id="load" aria-hidden="true">
+  <div>
+    <div class="seal"><i></i></div>
+    <div class="lbl">RANE &amp; KHOSLA</div>
+  </div>
+</div>
+
+<div id="hud" aria-hidden="true">
+  <div class="st" id="h-stage">Instruction</div>
+  <div class="rd">
+    <span>MATTER <b>PUN/2026/0148</b></span>
+    <span>SHEETS <b id="h-sheets">0</b></span>
+    <span>DAY <b id="h-day">0</b></span>
+  </div>
+  <div id="bar"><i id="h-bar"></i></div>
+</div>
+
+<div id="rail" aria-hidden="true"></div>
+
+<nav id="nav">
+  <a class="logo" href="#hero">Rane <em>&amp;</em> Khosla</a>
+  <div class="links">
+    <a href="#matter">How we work</a>
+    <a href="#practice">Practice</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a class="btn btn-p" href="#contact">Request a consultation</a>
+</nav>
+
+<main>
+
+  <section id="hero" class="dark scrim">
+    <div class="eyebrow">Advocates &amp; Solicitors &nbsp;/&nbsp; Pune &nbsp;/&nbsp; since 2011</div>
+    <h1>Advice you can act on the same week.</h1>
+    <div class="row">
+      <p class="lede">Commercial advisory, disputes, real estate and employment. We give you the answer and the risk in plain language first, and the reasoning underneath it if you want it.</p>
+      <div class="cta">
+        <a class="btn btn-p" href="#contact">Request a consultation</a>
+        <a class="btn btn-g" href="#matter">How a matter runs</a>
+      </div>
+    </div>
+    <div id="cue" aria-hidden="true"><span>SCROLL</span><i></i></div>
+  </section>
+
+  <div class="tape"><div class="run" id="tape"></div></div>
+
+  <section id="matter" class="dark scrim">
+    <div class="eyebrow rv">How a matter runs</div>
+    <h2 class="rv" style="margin-top:22px;max-width:13ch">From instruction to execution.</h2>
+    <div class="steps">
+      <div class="step rv">
+        <div class="cl"><b>§ 01</b><i>Day 0</i></div>
+        <h3>Instruction</h3>
+        <p>An hour with a partner, not an associate. You leave that meeting knowing whether you have a case, what it is likely to cost, and whether we think you should be spending the money at all.</p>
+        <div class="kit"><span>Conflict check first</span><span>Fee estimate in writing</span></div>
+      </div>
+      <div class="step rv">
+        <div class="cl"><b>§ 02</b><i>Day 1–5</i></div>
+        <h3>Advice</h3>
+        <p>A written opinion with the position at the top and the authorities underneath. If the honest advice is to settle, or to do nothing, that is what the first page will say.</p>
+        <div class="kit"><span>Plain-language summary</span><span>Authorities annexed</span></div>
+      </div>
+      <div class="step rv">
+        <div class="cl"><b>§ 03</b><i>Day 5–12</i></div>
+        <h3>Drafting</h3>
+        <p>Contracts, pleadings and notices drafted to be read by the other side's counsel, not to impress you. Every clause that shifts risk is flagged in the margin so you know what you are signing.</p>
+        <div class="kit"><span>Risk flagged in margin</span><span>Two rounds included</span></div>
+      </div>
+      <div class="step rv">
+        <div class="cl"><b>§ 04</b><i>Day 12–16</i></div>
+        <h3>Review</h3>
+        <p>A second partner reads everything that leaves this office. It costs us time and catches the things the drafter stopped being able to see three drafts ago.</p>
+        <div class="kit"><span>Second-partner review</span><span>Marked up in full</span></div>
+      </div>
+      <div class="step rv">
+        <div class="cl"><b>§ 05</b><i>Day 16+</i></div>
+        <h3>Execution &amp; filing</h3>
+        <p>Signature, stamping, registration or filing — handled by us, with the bundle paginated and indexed. You get the executed set and a closing note on what to diarise and when.</p>
+        <div class="kit"><span>Indexed bundle</span><span>Diary note on limitation</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="practice" class="solid">
+    <div class="eyebrow rv">Practice areas</div>
+    <h2 class="rv" style="margin-top:22px;max-width:17ch">Four areas, done properly.</h2>
+    <div class="grid4">
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#b08a4a" stroke-width="1.4"><path d="M7 4h13l5 5v19H7z"/><path d="M20 4v5h5"/><path d="M11 15h10M11 20h10M11 25h6"/></svg>
+        <h3>Commercial</h3>
+        <p>Shareholder agreements, JVs, supply and distribution contracts, and the diligence that should happen before any of them.</p>
+        <div class="inc">Advisory · transactions</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#b08a4a" stroke-width="1.4"><path d="M16 4v24M7 10h18"/><path d="M9 10l-4 8h8zM23 10l-4 8h8z"/><path d="M10 28h12"/></svg>
+        <h3>Disputes</h3>
+        <p>Commercial litigation and arbitration before the courts and tribunals in Maharashtra, with an honest view on settlement at every stage.</p>
+        <div class="inc">Litigation · arbitration</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#b08a4a" stroke-width="1.4"><path d="M4 27V13l12-8 12 8v14z"/><path d="M12 27v-9h8v9"/></svg>
+        <h3>Real estate</h3>
+        <p>Title diligence, development agreements, leasing and RERA compliance — including the searches most buyers find out about too late.</p>
+        <div class="inc">Title · RERA · leasing</div>
+      </div>
+      <div class="card rv">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#b08a4a" stroke-width="1.4"><circle cx="16" cy="10" r="5"/><path d="M6 28c0-6 4.5-9 10-9s10 3 10 9"/></svg>
+        <h3>Employment</h3>
+        <p>Contracts and policies, restructuring, exits and internal investigations, including POSH committees and enquiry procedure.</p>
+        <div class="inc">Advisory · investigations</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="light">
+    <div class="statement">
+      <div>
+        <div class="eyebrow rv">The argument</div>
+        <h2 class="rv" style="margin-top:22px">Most legal cost is spent on problems that were cheap to prevent.</h2>
+      </div>
+      <p class="lede rv">The agreement nobody read closely, the notice period nobody diarised, the title search nobody ran. By the time it becomes a dispute it costs twenty times what the hour of advice would have. We would rather be the invoice you do not remember than the one you cannot forget.</p>
+    </div>
+    <div class="stats">
+      <div class="stat rv"><div class="k">Matters handled</div><div class="v" data-count="1900">0<small>+</small></div></div>
+      <div class="stat rv"><div class="k">Partners</div><div class="v" data-count="4">0</div></div>
+      <div class="stat rv"><div class="k">Years</div><div class="v" data-count="15">0</div></div>
+      <div class="stat rv"><div class="k">Opinion turnaround</div><div class="v" data-count="5">0<small>days</small></div></div>
+    </div>
+  </section>
+
+  <section id="faq" class="light">
+    <div class="eyebrow rv">Questions</div>
+    <h2 class="rv" style="margin-top:22px;max-width:15ch">Straight answers.</h2>
+    <div class="faq rv">
+      <details open>
+        <summary>How are fees calculated?</summary>
+        <p>Hourly for advisory and disputes, fixed fee for defined pieces of work such as an agreement, a notice or a title search. You get the estimate in writing before we start, and we tell you as soon as it looks like the estimate will be exceeded rather than at the end.</p>
+      </details>
+      <details>
+        <summary>Will I deal with a partner or an associate?</summary>
+        <p>A partner takes your instruction and a partner signs off everything that leaves the office. Associates do the work in between, which is what keeps the bill sensible. You will know who is doing what.</p>
+      </details>
+      <details>
+        <summary>What happens to what I tell you?</summary>
+        <p>Communications with us in a professional capacity are privileged under section 132 of the Bharatiya Sakshya Adhiniyam, 2023. We run a conflict check before taking instructions and will decline the matter if one exists.</p>
+      </details>
+      <details>
+        <summary>Do you appear outside Maharashtra?</summary>
+        <p>We appear before courts and tribunals across Maharashtra and instruct counsel elsewhere in India where a matter requires it, staying on the file as instructing advocates so you keep one point of contact.</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="contact" class="dark">
+    <div class="eyebrow rv" style="justify-content:center">Consultations</div>
+    <h2 class="rv" style="margin-top:24px">Tell us the problem, not the solution.</h2>
+    <div class="cta rv">
+      <a class="btn btn-p" href="mailto:chambers@example.com?subject=Consultation%20enquiry">chambers@example.com</a>
+      <a class="btn btn-g" href="tel:+910000000000">+91 00000 00000</a>
+    </div>
+    <div class="mono rv" style="margin-top:22px">Consultations by appointment &nbsp;·&nbsp; Mon–Fri</div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="top">
+    <span class="logo" style="font-size:13px">Rane <em>&amp;</em> Khosla</span>
+    <span class="mono">Advocates &amp; Solicitors · Pune</span>
+    <span class="mono sp"><a href="mailto:chambers@example.com">chambers@example.com</a></span>
+    <span class="mono">© 2026</span>
+  </div>
+  <p class="disc">
+    This website is for general information only. It is not an advertisement or solicitation of work, and nothing on it constitutes legal advice or creates an advocate–client relationship. By reading further you acknowledge that you sought this information of your own accord. Please take formal advice on your own facts before acting.
+  </p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function lerp(a,b,t){ return a+(b-a)*t; }
+function ease(t){ return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
+function seg(p,a,b){ return clamp((p-a)/(b-a),0,1); }
+function mulberry(a){
+  return function(){
+    a|=0; a=a+0x6D2B79F5|0;
+    var t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+setTimeout(function(){ document.body.classList.add('open'); }, reduce?200:1500);
+
+(function(){
+  var items=['Commercial advisory','Disputes','Real estate','Employment','Arbitration','RERA','Due diligence','Pune'];
+  var h='';
+  for (var r=0;r<2;r++) for (var i=0;i<items.length;i++) h+='<span><b>§</b> '+items[i]+'</span>';
+  document.getElementById('tape').innerHTML=h;
+})();
+
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(!e.isIntersecting) return;
+    e.target.classList.add('in'); io.unobserve(e.target);
+    var c=e.target.querySelector('[data-count]'); if(c) countUp(c);
+  });
+},{threshold:0.18, rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(el,i){
+  el.style.transitionDelay=(i%4)*0.07+'s'; io.observe(el);
+});
+function countUp(el){
+  var target=parseFloat(el.getAttribute('data-count'));
+  var sm=el.querySelector('small'), tail=sm?sm.outerHTML:'';
+  if (reduce){ el.innerHTML=target+tail; return; }
+  var t0=performance.now();
+  (function step(now){
+    var pr=clamp((now-t0)/1200,0,1);
+    el.innerHTML=Math.round(target*ease(pr)).toLocaleString('en-IN')+tail;
+    if(pr<1) requestAnimationFrame(step);
+  })(performance.now());
+}
+
+(function(){
+  var lights=Array.prototype.slice.call(document.querySelectorAll('.light'));
+  var lio=new IntersectionObserver(function(es){
+    es.forEach(function(e){ e.target.dataset.vis=e.intersectionRatio>0.45?'1':'0'; });
+    var any=false;
+    for (var i=0;i<lights.length;i++) if (lights[i].dataset.vis==='1'){ any=true; break; }
+    document.body.classList.toggle('lit', any);
+  },{threshold:[0,0.2,0.45,0.7,1]});
+  lights.forEach(function(l){ lio.observe(l); });
+})();
+
+var nav=document.getElementById('nav'), progEl=document.getElementById('prog');
+function navState(){
+  nav.classList.toggle('stuck', window.scrollY>40);
+  document.body.classList.toggle('scrolled', window.scrollY>90);
+  var max=document.body.scrollHeight-window.innerHeight;
+  progEl.style.width=(max>0?(window.scrollY/max*100):0)+'%';
+}
+navState();
+window.addEventListener('scroll', navState, {passive:true});
+window.addEventListener('resize', navState);
+
+/* rail */
+var STAGES=[[0,'Instruction'],[0.10,'Advice'],[0.30,'Drafting'],[0.46,'Review'],[0.60,'Binding'],[0.72,'Execution'],[0.86,'Filed']];
+(function(){
+  var h='';
+  for (var i=0;i<STAGES.length;i++) h+='<span class="stp" data-i="'+i+'">'+STAGES[i][1]+'</span>';
+  document.getElementById('rail').innerHTML=h;
+})();
+var railEls=document.querySelectorAll('#rail .stp');
+var hStage=document.getElementById('h-stage'), hSheets=document.getElementById('h-sheets'),
+    hDay=document.getElementById('h-day'), hBar=document.getElementById('h-bar');
+function updateHUD(p, sheets){
+  var idx=0;
+  for (var i=0;i<STAGES.length;i++) if (p>=STAGES[i][0]) idx=i;
+  hStage.textContent=STAGES[idx][1];
+  for (i=0;i<railEls.length;i++) railEls[i].classList.toggle('on', i===idx);
+  hSheets.textContent=Math.round(sheets);
+  hDay.textContent=Math.round(p*22);
+  hBar.style.width=(p*100)+'%';
+}
+
+/* ================================================================
+   3D — the bundle assembles on the desk
+   ================================================================ */
+function init3D(){
+var canvas=document.getElementById('gl');
+var renderer=new THREE.WebGLRenderer({canvas:canvas, antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.08;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+var scene=new THREE.Scene();
+(function(){
+  var c=document.createElement('canvas'); c.width=512; c.height=256;
+  var g=c.getContext('2d');
+  var lg=g.createLinearGradient(0,0,0,256);
+  lg.addColorStop(0,'#161c28'); lg.addColorStop(0.5,'#0d111a'); lg.addColorStop(1,'#070910');
+  g.fillStyle=lg; g.fillRect(0,0,512,256);
+  var rg=g.createRadialGradient(256,140,6,256,140,200);
+  rg.addColorStop(0,'rgba(176,138,74,0.22)'); rg.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=rg; g.fillRect(0,0,512,256);
+  var t=new THREE.CanvasTexture(c);
+  t.mapping=THREE.EquirectangularReflectionMapping; t.encoding=THREE.sRGBEncoding;
+  scene.background=t;
+})();
+scene.fog=new THREE.Fog(0x0b0e14, 34, 130);
+var camera=new THREE.PerspectiveCamera(38,1,0.1,400);
+
+/* studio environment */
+(function(){
+  var c=document.createElement('canvas'); c.width=1024; c.height=512;
+  var g=c.getContext('2d');
+  var lg=g.createLinearGradient(0,0,0,512);
+  lg.addColorStop(0,'#222836'); lg.addColorStop(0.5,'#13171f'); lg.addColorStop(1,'#080a0e');
+  g.fillStyle=lg; g.fillRect(0,0,1024,512);
+  function lamp(x,y,r,col,a){
+    var rg=g.createRadialGradient(x,y,2,x,y,r);
+    rg.addColorStop(0,col); rg.addColorStop(1,'rgba(0,0,0,0)');
+    g.globalAlpha=a; g.fillStyle=rg; g.fillRect(x-r,y-r,r*2,r*2); g.globalAlpha=1;
+  }
+  lamp(300,150,290,'rgba(255,236,205,1)',0.95);
+  lamp(770,190,210,'rgba(150,180,215,1)',0.6);
+  lamp(520,50,420,'rgba(255,255,255,1)',0.35);
+  lamp(140,370,190,'rgba(176,138,74,1)',0.5);
+  var pm=new THREE.PMREMGenerator(renderer);
+  pm.compileEquirectangularShader();
+  var t=new THREE.CanvasTexture(c);
+  t.mapping=THREE.EquirectangularReflectionMapping; t.encoding=THREE.sRGBEncoding;
+  try { scene.environment=pm.fromEquirectangular(t).texture; } catch(e){}
+  t.dispose();
+})();
+
+scene.add(new THREE.HemisphereLight(0x8ba0c0,0x120e08,0.35));
+var key=new THREE.DirectionalLight(0xffe3b8,2.0);
+key.position.set(-8,17,7); key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);
+key.shadow.bias=-0.0006; key.shadow.normalBias=0.03;
+var kc=key.shadow.camera; kc.left=-20; kc.right=20; kc.top=20; kc.bottom=-20; kc.near=1; kc.far=60; kc.updateProjectionMatrix();
+scene.add(key);
+var lampLight=new THREE.PointLight(0xffcf95, 5.2, 40, 1.6);
+lampLight.position.set(-7.6,7.4,-2.2); scene.add(lampLight);
+var fillL=new THREE.DirectionalLight(0x6d86b8,0.40);
+fillL.position.set(14,9,12); scene.add(fillL);
+
+var R=mulberry(1948);
+
+/* ---------------- POST PROCESSING ---------------- */
+var isGL2=renderer.capabilities.isWebGL2;
+var sceneRT=null, bloomA=null, bloomB=null, ppW=1, ppH=1;
+var VERT=['varying vec2 vUv;','void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }'].join('\n');
+var brightMat=new THREE.ShaderMaterial({
+  uniforms:{tDiffuse:{value:null},threshold:{value:0.60},knee:{value:0.34}},
+  vertexShader:VERT,
+  fragmentShader:['uniform sampler2D tDiffuse; uniform float threshold; uniform float knee; varying vec2 vUv;',
+    'void main(){ vec3 c=texture2D(tDiffuse,vUv).rgb;',
+    ' float l=dot(c,vec3(0.2126,0.7152,0.0722));',
+    ' float s=smoothstep(threshold,threshold+knee,l);',
+    ' gl_FragColor=vec4(c*s*s,1.0); }'].join('\n'),
+  depthTest:false,depthWrite:false
+});
+var blurMat=new THREE.ShaderMaterial({
+  uniforms:{tDiffuse:{value:null},dir:{value:new THREE.Vector2()}},
+  vertexShader:VERT,
+  fragmentShader:['uniform sampler2D tDiffuse; uniform vec2 dir; varying vec2 vUv;',
+    'void main(){ vec4 s=vec4(0.0);',
+    ' s+=texture2D(tDiffuse,vUv-dir*4.0)*0.0162;',
+    ' s+=texture2D(tDiffuse,vUv-dir*3.0)*0.0540;',
+    ' s+=texture2D(tDiffuse,vUv-dir*2.0)*0.1216;',
+    ' s+=texture2D(tDiffuse,vUv-dir)*0.1946;',
+    ' s+=texture2D(tDiffuse,vUv)*0.2270;',
+    ' s+=texture2D(tDiffuse,vUv+dir)*0.1946;',
+    ' s+=texture2D(tDiffuse,vUv+dir*2.0)*0.1216;',
+    ' s+=texture2D(tDiffuse,vUv+dir*3.0)*0.0540;',
+    ' s+=texture2D(tDiffuse,vUv+dir*4.0)*0.0162;',
+    ' gl_FragColor=s; }'].join('\n'),
+  depthTest:false,depthWrite:false
+});
+var compMat=new THREE.ShaderMaterial({
+  uniforms:{tScene:{value:null},tBloom:{value:null},strength:{value:0.55},
+            aberr:{value:0.5},vig:{value:0.46},grain:{value:0.032},time:{value:0}},
+  vertexShader:VERT,
+  fragmentShader:['uniform sampler2D tScene; uniform sampler2D tBloom;',
+    'uniform float strength; uniform float aberr; uniform float vig; uniform float grain; uniform float time;',
+    'varying vec2 vUv;',
+    'float rnd(vec2 p){ return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453); }',
+    'void main(){ vec2 uv=vUv; vec2 c=uv-0.5; float r2=dot(c,c);',
+    ' vec2 off=c*aberr*r2*0.05; vec3 col;',
+    ' col.r=texture2D(tScene,uv+off).r;',
+    ' col.g=texture2D(tScene,uv).g;',
+    ' col.b=texture2D(tScene,uv-off).b;',
+    ' col+=texture2D(tBloom,uv).rgb*strength;',
+    ' float l=dot(col,vec3(0.2126,0.7152,0.0722));',
+    ' col=mix(col*vec3(0.92,0.97,1.12), col*vec3(1.08,1.01,0.90), smoothstep(0.20,0.85,l));',
+    ' col=clamp(col,0.0,1.6);',
+    ' col=col*col*(3.0-2.0*col)*0.28+col*0.72;',
+    ' col*=1.0-vig*r2*1.7;',
+    ' col+=(rnd(uv*1024.0+fract(time))-0.5)*grain;',
+    ' gl_FragColor=vec4(col,1.0); }'].join('\n'),
+  depthTest:false,depthWrite:false
+});
+var fsScene=new THREE.Scene();
+var fsCam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+var fsQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2), brightMat);
+fsScene.add(fsQuad);
+function newRT(w,h,ms,srgb){
+  var o={minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,format:THREE.RGBAFormat};
+  if (srgb) o.encoding=THREE.sRGBEncoding;
+  if (ms && isGL2 && THREE.WebGLMultisampleRenderTarget){
+    var r2=new THREE.WebGLMultisampleRenderTarget(w,h,o); r2.samples=4; return r2;
+  }
+  return new THREE.WebGLRenderTarget(w,h,o);
+}
+function resizeRTs(){
+  var sz=new THREE.Vector2(); renderer.getDrawingBufferSize(sz);
+  var w=Math.max(2,Math.floor(sz.x)), h=Math.max(2,Math.floor(sz.y));
+  if (w===ppW && h===ppH && sceneRT) return;
+  ppW=w; ppH=h;
+  if (sceneRT) sceneRT.dispose();
+  if (bloomA) bloomA.dispose();
+  if (bloomB) bloomB.dispose();
+  sceneRT=newRT(w,h,true,true);
+  bloomA=newRT(Math.max(2,w>>1),Math.max(2,h>>1),false,false);
+  bloomB=newRT(Math.max(2,w>>1),Math.max(2,h>>1),false,false);
+}
+function blit(mat,target){
+  fsQuad.material=mat;
+  renderer.setRenderTarget(target||null);
+  renderer.render(fsScene,fsCam);
+  renderer.setRenderTarget(null);
+}
+function renderPipeline(time){
+  resizeRTs();
+  renderer.setRenderTarget(sceneRT); renderer.clear(); renderer.render(scene,camera); renderer.setRenderTarget(null);
+  var hw=bloomA.width, hh=bloomA.height;
+  brightMat.uniforms.tDiffuse.value=sceneRT.texture; blit(brightMat,bloomA);
+  blurMat.uniforms.tDiffuse.value=bloomA.texture; blurMat.uniforms.dir.value.set(1/hw,0); blit(blurMat,bloomB);
+  blurMat.uniforms.tDiffuse.value=bloomB.texture; blurMat.uniforms.dir.value.set(0,1/hh); blit(blurMat,bloomA);
+  blurMat.uniforms.tDiffuse.value=bloomA.texture; blurMat.uniforms.dir.value.set(2.5/hw,0); blit(blurMat,bloomB);
+  blurMat.uniforms.tDiffuse.value=bloomB.texture; blurMat.uniforms.dir.value.set(0,2.5/hh); blit(blurMat,bloomA);
+  compMat.uniforms.tScene.value=sceneRT.texture;
+  compMat.uniforms.tBloom.value=bloomA.texture;
+  compMat.uniforms.time.value=time;
+  blit(compMat,null);
+}
+
+/* ---------------- desk ---------------- */
+function woodTex(){
+  var c=document.createElement('canvas'); c.width=512; c.height=512;
+  var g=c.getContext('2d');
+  g.fillStyle='#2a1d14'; g.fillRect(0,0,512,512);
+  for (var i=0;i<180;i++){
+    g.strokeStyle='rgba('+(60+Math.random()*40|0)+','+(40+Math.random()*26|0)+',26,'+(0.10+Math.random()*0.22)+')';
+    g.lineWidth=0.6+Math.random()*2.4;
+    g.beginPath();
+    var y=Math.random()*512;
+    g.moveTo(0,y);
+    g.bezierCurveTo(170,y+(Math.random()-0.5)*22,340,y+(Math.random()-0.5)*22,512,y+(Math.random()-0.5)*12);
+    g.stroke();
+  }
+  var t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(3,3); t.encoding=THREE.sRGBEncoding;
+  return t;
+}
+var desk=new THREE.Mesh(new THREE.BoxGeometry(60,1.6,36),
+  new THREE.MeshStandardMaterial({map:woodTex(),roughness:0.42,metalness:0.05,envMapIntensity:0.7}));
+desk.position.y=-0.8; desk.receiveShadow=true; scene.add(desk);
+
+function blobTex(){
+  var c=document.createElement('canvas'); c.width=c.height=128;
+  var g=c.getContext('2d');
+  var rg=g.createRadialGradient(64,64,2,64,64,62);
+  rg.addColorStop(0,'rgba(0,0,0,0.75)'); rg.addColorStop(0.55,'rgba(0,0,0,0.3)'); rg.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=rg; g.fillRect(0,0,128,128);
+  return new THREE.CanvasTexture(c);
+}
+var BLOB=blobTex();
+function contact(x,z,s){
+  var m=new THREE.Mesh(new THREE.PlaneGeometry(s,s),
+    new THREE.MeshBasicMaterial({map:BLOB,transparent:true,opacity:0.8,depthWrite:false}));
+  m.rotation.x=-Math.PI/2; m.position.set(x,0.012,z); scene.add(m); return m;
+}
+contact(0,0,17); contact(-7.6,-2.2,9); contact(14.5,-1,15);
+
+/* ---------------- documents ---------------- */
+function docTex(seed, kind){
+  var c=document.createElement('canvas'); c.width=300; c.height=424;
+  var g=c.getContext('2d'), rnd=mulberry(seed);
+  g.fillStyle='#f2ede2'; g.fillRect(0,0,300,424);
+  g.fillStyle='rgba(120,105,80,0.06)';
+  for (var s2=0;s2<40;s2++) g.fillRect(rnd()*300, rnd()*424, 26, 3);
+  /* heading */
+  g.fillStyle='#2a2622';
+  g.fillRect(34,34,150,7);
+  g.fillRect(34,48,96,4);
+  /* clause blocks */
+  var y=76;
+  for (var b=0;b<9 && y<376;b++){
+    g.fillStyle='#8c7f6a';
+    g.fillRect(26,y,10,3);            /* clause number in the margin */
+    g.fillStyle='#3a352e';
+    var lines=1+Math.floor(rnd()*4);
+    for (var l=0;l<lines;l++){
+      var w=170+rnd()*90;
+      g.fillRect(46,y+l*11, w, 3.2);
+    }
+    y+=lines*11+12;
+  }
+  if (kind===1){                       /* signature page */
+    g.fillStyle='#3a352e'; g.fillRect(46,330,90,2.4); g.fillRect(160,330,90,2.4);
+    g.strokeStyle='#1c3a6b'; g.lineWidth=2.2; g.beginPath();
+    g.moveTo(52,326);
+    g.bezierCurveTo(70,306,86,346,104,318);
+    g.bezierCurveTo(114,304,124,330,132,320);
+    g.stroke();
+    g.fillStyle='#8c7f6a'; g.fillRect(46,342,60,2); g.fillRect(160,342,60,2);
+  }
+  var t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.anisotropy=4;
+  return t;
+}
+var SHEETS=22;
+var paperEdge=new THREE.MeshStandardMaterial({color:0xe8e2d5,roughness:0.92,metalness:0});
+var sheets=[];
+for (var i=0;i<SHEETS;i++){
+  var top=new THREE.MeshStandardMaterial({map:docTex(700+i*53, i===SHEETS-1?1:0),roughness:0.88,metalness:0});
+  var m=new THREE.Mesh(new THREE.BoxGeometry(6.0,0.05,8.5),
+    [paperEdge,paperEdge,top,paperEdge,paperEdge,paperEdge]);
+  m.castShadow=true; m.receiveShadow=true;
+  scene.add(m);
+  var side=(i%2?1:-1);
+  sheets.push({
+    m:m,
+    from:new THREE.Vector3(side*(20+R()*16), 9+R()*8, -14+R()*26),
+    rotFrom:new THREE.Vector3((R()-0.5)*2.2,(R()-0.5)*3.0,(R()-0.5)*2.2),
+    jitter:new THREE.Vector3((R()-0.5)*0.9,0,(R()-0.5)*0.9),
+    jrot:(R()-0.5)*0.16
+  });
+}
+
+/* red pen marks */
+var marks=[];
+var markMat=new THREE.MeshBasicMaterial({color:0x8c2f39,transparent:true,opacity:0});
+for (var k2=0;k2<7;k2++){
+  var mk=new THREE.Mesh(new THREE.PlaneGeometry(1.4+R()*1.6,0.13), markMat.clone());
+  mk.rotation.x=-Math.PI/2; mk.rotation.z=(R()-0.5)*0.12;
+  mk.position.set(-1.2+R()*2.6, 0, -2.6+R()*5.4);
+  scene.add(mk); marks.push(mk);
+}
+
+/* brass fastener */
+var brassMat=new THREE.MeshStandardMaterial({color:0xc9a35c,roughness:0.24,metalness:1,envMapIntensity:1.7});
+var fastener=new THREE.Group();
+(function(){
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(0.42,0.09,12,26), brassMat);
+  ring.rotation.x=Math.PI/2; fastener.add(ring);
+  var post=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,1.4,12), brassMat);
+  post.position.y=-0.5; fastener.add(post);
+  fastener.castShadow=true;
+})();
+fastener.position.set(-2.2,6,-3.3); fastener.visible=false; scene.add(fastener);
+
+/* wax seal */
+var sealMat=new THREE.MeshStandardMaterial({color:0x8c2f39,roughness:0.38,metalness:0.05,envMapIntensity:1.1});
+var seal=new THREE.Mesh(
+  (function(){
+    var pts=[];
+    pts.push(new THREE.Vector2(0,0));
+    pts.push(new THREE.Vector2(1.05,0));
+    pts.push(new THREE.Vector2(1.15,0.12));
+    pts.push(new THREE.Vector2(1.0,0.3));
+    pts.push(new THREE.Vector2(0.62,0.38));
+    pts.push(new THREE.Vector2(0,0.4));
+    return new THREE.LatheGeometry(pts,40);
+  })(), sealMat);
+seal.castShadow=true; seal.visible=false; scene.add(seal);
+var sealRing=new THREE.Mesh(new THREE.TorusGeometry(0.62,0.05,10,32),
+  new THREE.MeshStandardMaterial({color:0xb0424c,roughness:0.3,metalness:0.1}));
+sealRing.rotation.x=Math.PI/2; sealRing.visible=false; scene.add(sealRing);
+
+/* bound reports */
+var books=new THREE.Group(); scene.add(books);
+(function(){
+  var cols=[0x5a2229,0x27402c,0x2b3550,0x5a2229,0x30271e];
+  for (var i2=0;i2<5;i2++){
+    var h=6.6+R()*1.4, w=0.85+R()*0.5;
+    var bk=new THREE.Mesh(new THREE.BoxGeometry(w,h,4.8),
+      new THREE.MeshStandardMaterial({color:cols[i2],roughness:0.62,metalness:0.05,envMapIntensity:0.9}));
+    bk.position.set(i2*1.05, h/2, -1);
+    bk.rotation.z=(i2===4?0.14:0);
+    bk.castShadow=true; bk.receiveShadow=true;
+    books.add(bk);
+    var band=new THREE.Mesh(new THREE.BoxGeometry(w*0.72,0.14,0.06), brassMat);
+    band.position.set(bk.position.x, h*0.72, 2.42); books.add(band);
+    var band2=band.clone(); band2.position.y=h*0.30; books.add(band2);
+  }
+})();
+books.position.x=20; books.visible=true;
+
+/* desk lamp */
+(function(){
+  var base=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.7,0.34,28), brassMat);
+  base.position.set(-7.6,0.17,-2.2); base.castShadow=true; scene.add(base);
+  var stem=new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.15,7.4,14), brassMat);
+  stem.position.set(-7.6,3.8,-2.2); stem.castShadow=true; scene.add(stem);
+  var arm=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,3.4,12), brassMat);
+  arm.position.set(-6.2,7.5,-2.2); arm.rotation.z=Math.PI/2; scene.add(arm);
+  var shade=new THREE.Mesh(new THREE.CylinderGeometry(1.9,1.1,1.7,26,1,true),
+    new THREE.MeshStandardMaterial({color:0xc9a35c,roughness:0.3,metalness:0.9,side:THREE.DoubleSide,
+      emissive:0xffb864,emissiveIntensity:0.55}));
+  shade.position.set(-4.6,7.0,-2.2); shade.rotation.z=0.42; shade.castShadow=true; scene.add(shade);
+  var bulb=new THREE.Mesh(new THREE.SphereGeometry(0.42,14,12),
+    new THREE.MeshBasicMaterial({color:0xffe0b0}));
+  bulb.position.set(-4.9,6.5,-2.2); scene.add(bulb);
+})();
+
+/* dust in the lamp beam */
+(function(){
+  var n=300, pos=new Float32Array(n*3);
+  for (var i3=0;i3<n;i3++){
+    pos[i3*3]=(Math.random()-0.5)*34;
+    pos[i3*3+1]=Math.random()*14;
+    pos[i3*3+2]=(Math.random()-0.5)*24;
+  }
+  var g=new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xffd9a8,size:0.09,transparent:true,opacity:0.35,depthWrite:false})));
+})();
+
+/* ---------------- camera ---------------- */
+var KEYS=[
+  {p:0.00, r:26, th:0.70, ph:1.30, tx:0,  ty:2.4},
+  {p:0.18, r:20, th:0.30, ph:1.05, tx:0,  ty:3.4},
+  {p:0.38, r:15, th:-0.30,ph:0.62, tx:0,  ty:2.2},
+  {p:0.55, r:13, th:0.35, ph:1.02, tx:-1, ty:2.0},
+  {p:0.72, r:10, th:0.95, ph:0.86, tx:0,  ty:2.6},
+  {p:0.88, r:24, th:0.45, ph:1.14, tx:4,  ty:3.0},
+  {p:1.00, r:32, th:0.05, ph:1.20, tx:5,  ty:3.4}
+];
+var cam={r:26,th:0.7,ph:1.3,tx:0,ty:2.4}, want={r:26,th:0.7,ph:1.3,tx:0,ty:2.4};
+var mx=0,my=0,tmx=0,tmy=0,fitK=1;
+function progress(){
+  var max=document.body.scrollHeight-window.innerHeight;
+  return max>0?clamp(window.scrollY/max,0,1):0;
+}
+function sample(p){
+  var a=KEYS[0], b=KEYS[KEYS.length-1];
+  for (var i4=0;i4<KEYS.length-1;i4++){
+    if (p>=KEYS[i4].p && p<=KEYS[i4+1].p){ a=KEYS[i4]; b=KEYS[i4+1]; break; }
+  }
+  var t=ease(clamp((p-a.p)/Math.max(b.p-a.p,1e-6),0,1));
+  want.r=lerp(a.r,b.r,t)*fitK; want.th=lerp(a.th,b.th,t);
+  want.ph=lerp(a.ph,b.ph,t); want.tx=lerp(a.tx,b.tx,t); want.ty=lerp(a.ty,b.ty,t);
+}
+window.addEventListener('pointermove', function(e){
+  tmx=e.clientX/window.innerWidth-0.5; tmy=e.clientY/window.innerHeight-0.5;
+});
+function resize(){
+  var w=window.innerWidth, h=window.innerHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+  fitK=clamp(1.72/(w/h),1,1.8);
+  resizeRTs();
+}
+window.addEventListener('resize',resize); resize();
+
+/* ---------------- the bundle ---------------- */
+var SH_T=0.05;
+function build(p,t){
+  var stack=seg(p,0.06,0.44)*SHEETS;
+  var review=seg(p,0.44,0.58);
+  var square=seg(p,0.56,0.68);
+  var bind=seg(p,0.62,0.74);
+  var press=seg(p,0.74,0.86);
+  var i;
+
+  for (i=0;i<SHEETS;i++){
+    var S=sheets[i], f=clamp(stack-i,0,1), e=ease(f);
+    S.m.visible=f>0.002;
+    if (!S.m.visible) continue;
+    var restY=0.06+i*SH_T;
+    var jx=S.jitter.x*(1-square), jz=S.jitter.z*(1-square), jr=S.jrot*(1-square);
+    S.m.position.set(lerp(S.from.x,jx,e), lerp(S.from.y,restY,e), lerp(S.from.z,jz,e));
+    S.m.rotation.set(lerp(S.rotFrom.x,0,e), lerp(S.rotFrom.y,jr,e), lerp(S.rotFrom.z,0,e));
+  }
+  var topY=0.06+(Math.max(stack,1)-1)*SH_T;
+
+  for (i=0;i<marks.length;i++){
+    marks[i].position.y=topY+0.045;
+    marks[i].material.opacity=clamp(review*1.6-i*0.12,0,0.92);
+  }
+
+  fastener.visible=bind>0.01;
+  fastener.position.set(-2.2, lerp(7.5, topY+0.28, ease(bind)), -3.3);
+  fastener.rotation.y=t*0.4*(1-bind);
+
+  var pe=ease(press);
+  seal.visible=press>0.01; sealRing.visible=press>0.35;
+  var sy=lerp(7.0, topY+0.06, pe);
+  seal.position.set(1.9, sy, 2.6);
+  var squash=1+Math.max(0,Math.sin(clamp((press-0.55)/0.2,0,1)*Math.PI))*0.22;
+  seal.scale.set(squash,1/(0.6+squash*0.4),squash);
+  sealRing.position.set(1.9, topY+0.16, 2.6);
+  sealRing.scale.setScalar(0.9+press*0.25);
+
+  books.position.x=lerp(21,12.5,ease(seg(p,0.82,0.98)));
+
+  updateHUD(p, Math.min(stack,SHEETS));
+}
+
+/* ---------------- loop ---------------- */
+var t0=performance.now();
+function frame(now){
+  var dt=Math.min(now-t0,120); t0=now;
+  var time=now*0.001, p=progress();
+  sample(p); build(p,time);
+
+  var k=reduce?1:clamp(dt/1000*4,0,1);
+  cam.r=lerp(cam.r,want.r,k); cam.th=lerp(cam.th,want.th,k);
+  cam.ph=lerp(cam.ph,want.ph,k); cam.tx=lerp(cam.tx,want.tx,k); cam.ty=lerp(cam.ty,want.ty,k);
+  mx=lerp(mx,tmx,0.05); my=lerp(my,tmy,0.05);
+
+  var th=cam.th+mx*0.20, ph=clamp(cam.ph+my*0.11,0.14,1.45);
+  camera.position.set(
+    cam.tx+cam.r*Math.sin(ph)*Math.sin(th),
+    Math.max(cam.ty+cam.r*Math.cos(ph),0.9),
+    cam.r*Math.sin(ph)*Math.cos(th)
+  );
+  if (!reduce){
+    camera.position.x+=Math.sin(time*0.33)*0.14+Math.sin(time*0.87)*0.05;
+    camera.position.y+=Math.cos(time*0.27)*0.11;
+  }
+  camera.lookAt(cam.tx,cam.ty,0);
+  renderPipeline(time);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+}
+
+try {
+  if (typeof THREE === 'undefined') throw new Error('three.js unavailable');
+  init3D();
+} catch (err) {
+  document.body.classList.add('no3d');
+}
+
+})();
+</script>
+</body>
+</html>

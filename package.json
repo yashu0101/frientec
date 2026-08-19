@@ -1,0 +1,21 @@
+{
+  "name": "thefrendzo",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Website design catalogue, customisation studio and lead desk for local businesses. React front end, Node/Express API, JSON file storage.",
+  "workspaces": ["client", "server"],
+  "scripts": {
+    "dev": "concurrently -n api,web -c green,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "node --watch server/index.js",
+    "dev:web": "npm run dev --workspace client",
+    "build": "npm run build --workspace client",
+    "start": "node server/index.js",
+    "preview": "npm run build && npm start",
+    "reset": "node -e \"require('fs').rmSync('data',{recursive:true,force:true});console.log('data reset — restart the server')\""
+  },
+  "engines": { "node": ">=18" },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
