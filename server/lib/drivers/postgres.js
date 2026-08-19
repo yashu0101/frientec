@@ -35,10 +35,38 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000,
 });
 
+/* A pooled connection that dies while idle makes pg emit 'error' on the pool,
+   and an unhandled 'error' event takes the whole process down with it. That is
+   not hypothetical here: a free Neon compute suspends after a few minutes of
+   inactivity, so every quiet spell would kill the server and the host would
+   restart it — which looks like a service randomly 404ing rather than a crash.
+   Logging it is enough; the pool discards the dead client and opens a new one on
+   the next query. */
+pool.on('error', (err) => console.error('  postgres idle client dropped:', err.message));
+
+/* Waking that suspended compute takes a moment, and the first query through can
+   fail outright rather than block. These are the transient shapes worth one more
+   attempt — anything else is a real error and is thrown straight through. */
+const TRANSIENT = /ECONNRESET|Connection terminated|terminating connection|server closed the connection|timeout expired|ETIMEDOUT|EPIPE|Client has encountered a connection error/i;
+
+async function query(text, params, attempt = 1) {
+  try {
+    return await pool.query(text, params);
+  } catch (e) {
+    if (attempt <= 3 && TRANSIENT.test(e.message || '')) {
+      const wait = 400 * attempt;
+      console.error(`  postgres retry ${attempt}/3 in ${wait}ms — ${e.message}`);
+      await new Promise((r) => setTimeout(r, wait));
+      return query(text, params, attempt + 1);
+    }
+    throw e;
+  }
+}
+
 export const name = `postgres (${(url || '').replace(/:\/\/[^@]*@/, '://***@')})`;
 
 export async function load(keys) {
-  await pool.query(`
+  await query(`
     CREATE TABLE IF NOT EXISTS store (
       key        text PRIMARY KEY,
       doc        jsonb NOT NULL,
@@ -46,7 +74,7 @@ export async function load(keys) {
     )
   `);
 
-  const { rows } = await pool.query('SELECT key, doc FROM store WHERE key = ANY($1)', [keys]);
+  const { rows } = await query('SELECT key, doc FROM store WHERE key = ANY($1)', [keys]);
   const found = Object.fromEntries(rows.map((r) => [r.key, r.doc]));
   const out = {};
   for (const key of keys) out[key] = found[key]; // undefined when absent, so it gets seeded
@@ -54,7 +82,7 @@ export async function load(keys) {
 }
 
 export async function save(key, value) {
-  await pool.query(
+  await query(
     `INSERT INTO store (key, doc) VALUES ($1, $2)
      ON CONFLICT (key) DO UPDATE SET doc = $2, updated_at = now()`,
     [key, JSON.stringify(value)],
