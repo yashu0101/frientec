@@ -8,6 +8,15 @@
 <meta property="og:title" content="Professional websites for local businesses" />
 <meta property="og:description" content="Choose a design you love. We customise it with your name, photos and prices." />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230E7C5A'/><rect x='8' y='9' width='16' height='4' rx='1.5' fill='white'/><rect x='8' y='16' width='7' height='7' rx='1.5' fill='white'/><rect x='17' y='16' width='7' height='7' rx='1.5' fill='white' opacity='.6'/></svg>" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<meta name="theme-color" content="#0E7C5A" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#101014" media="(prefers-color-scheme: dark)" />
+<!-- iOS ignores the manifest for these two, so they are stated again -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Frientec" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="/icon.svg" />
 <script>
 /* Theme before first paint — a saved choice wins, otherwise follow the OS.
    Inline and synchronous on purpose: anything later flashes the wrong theme. */
@@ -23,6 +32,15 @@
     document.documentElement.setAttribute('data-theme', 'light');
   }
 })();
+</script>
+<script>
+/* Registered after load on purpose: a service worker install competing with the
+   first render buys nothing and can delay it. Wrapped because a page served over
+   plain http (or a browser without support) must not throw here. */
+window.addEventListener('load', function () {
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.register('/sw.js').catch(function () { /* not fatal */ });
+});
 </script>
 </head>
 <body>

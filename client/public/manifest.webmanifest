@@ -1,0 +1,16 @@
+{
+  "name": "Frientec — websites for local businesses",
+  "short_name": "Frientec",
+  "description": "Pick a ready-made website design, make it yours, and get it online.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F7F7F5",
+  "theme_color": "#0E7C5A",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

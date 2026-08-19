@@ -1150,3 +1150,67 @@ table.tbl tbody tr{transition:background .18s ease;}
   .worldband{min-height:94px;}
   .wb-stats{display:none;}
 }
+
+/* --- the phone shell ------------------------------------------------------
+   Installed to a home screen this runs with no browser chrome at all, so the
+   layout has to supply its own: navigation a thumb can reach, and padding that
+   clears the notch and the home indicator rather than sitting under them.
+
+   `env(safe-area-inset-*)` resolves to 0 in a normal tab, so the same rules are
+   correct in the browser and standalone. */
+.tabbar{display:none;}
+
+@media(max-width:720px){
+  .tabbar{
+    display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:color-mix(in srgb,var(--paper) 92%,transparent);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);
+    border-top:1px solid var(--line);
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  }
+  .tabbar .tab{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    border:0;background:0;cursor:pointer;padding:6px 2px;border-radius:10px;
+    font-family:inherit;font-size:10.5px;font-weight:600;letter-spacing:.01em;
+    color:var(--ink-3);-webkit-tap-highlight-color:transparent;
+  }
+  .tabbar .tab svg{width:21px;height:21px;}
+  .tabbar .tab.on{color:var(--go);}
+  .tabbar .tab.on svg{stroke-width:2.2;}
+  .tabbar .tab:active{background:var(--wash);}
+
+  /* room for the bar, so the footer and the last card are not trapped under it */
+  body{padding-bottom:calc(58px + env(safe-area-inset-bottom));}
+  /* and the chat button rides above it rather than on top of it */
+  .fab{bottom:calc(70px + env(safe-area-inset-bottom));}
+
+  /* The header held eight controls and ran past a 390px viewport, scrolling the
+     whole page sideways. The routes live in the tab bar now, so what stays up
+     here is identity plus the two things that are not navigation. */
+  header.top .bar{gap:8px;}
+  header.top nav{gap:4px;}
+  header.top .logo .disp{font-size:16px;}
+  .uilang .uil{padding:4px 6px;font-size:11px;}
+  .fab{font-size:0;padding:14px;}       /* the label is redundant next to an icon */
+  .fab::before{content:'💬';font-size:19px;}
+}
+
+/* Standalone: no URL bar means the sticky header is the only thing between the
+   content and the status bar, so it takes the inset itself. */
+@media(display-mode:standalone){
+  header.top .bar{padding-top:calc(10px + env(safe-area-inset-top));}
+}
+
+@media(max-width:420px){
+  /* three across is unreadable this narrow; the search row and chips already wrap */
+  .g3{grid-template-columns:1fr;}
+  .tabbar .tab span{font-size:10px;}
+}
+
+/* The hero's cross-fading layers are deliberately larger than the stage so the
+   parallax has somewhere to travel. On a phone that surplus pushed the document
+   35px wider than the viewport and the whole page scrolled sideways, so the band
+   clips it. Decorative overflow, nothing to reveal. */
+.stage{overflow:hidden;}
+.stage .beds{overflow:hidden;}

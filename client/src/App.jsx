@@ -13,6 +13,7 @@ import { UIProvider } from './state/UIProvider.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import Toast from './components/Toast.jsx';
+import TabBar from './components/TabBar.jsx';
 import { useDepth, useReveal } from './lib/motion.js';
 
 import Home from './pages/Home.jsx';
@@ -67,6 +68,7 @@ function Chrome() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       {bare ? null : <Footer />}
+      {location.pathname.startsWith('/build/') ? null : <TabBar />}
     </>
   );
 }

@@ -26,7 +26,9 @@ export default function Header() {
           <span className="disp" style={{ fontSize: '18px' }}>{settings.brand || 'Frientec'}</span>
         </Link>
         <nav>
-          <button type="button" className="btn ghost sm" onClick={() => navigate('/designs')}>{t('Designs')}</button>
+          {/* hide-sm because the tab bar carries this route on a phone; the header
+              keeps only identity and the two controls that are not navigation */}
+          <button type="button" className="btn ghost sm hide-sm" onClick={() => navigate('/designs')}>{t('Designs')}</button>
           {hasPremium ? (
             <button type="button" className="btn ghost sm hide-sm navprem" onClick={() => navigate(`/designs/${PREMIUM_SLUG}`)}>
               {t('Premium')}
