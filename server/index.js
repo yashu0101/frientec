@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
-   The Frendzo — Express API.
+   Frientec — Express API.
 
      npm run dev              → this on :4000, Vite on :5173
      npm start                → this on :4000, serving client/dist
@@ -33,6 +33,7 @@
 --------------------------------------------------------------------------- */
 import express from 'express';
 import { ensureData, settings } from './lib/store.js';
+import { DATA } from './lib/paths.js';
 import { mountStatic, mountClient } from './static.js';
 
 import authRoutes from './routes/auth.js';
@@ -73,6 +74,9 @@ api.use('/submit', express.json({ limit: UPLOAD_LIMIT }));
 api.use('/import', express.json({ limit: UPLOAD_LIMIT }));
 api.use(express.json({ limit: BODY_LIMIT }));
 
+/* A host's healthcheck needs something cheap that touches no data. */
+api.get('/health', (req, res) => res.json({ ok: true, uptime: Math.round(process.uptime()) }));
+
 api.use(authRoutes);
 api.use(bootstrapRoutes);
 api.use(demoRoutes);
@@ -101,5 +105,5 @@ app.listen(PORT, () => {
   const s = settings();
   console.log(`\n  ${s.brand} API running at http://localhost:${PORT}`);
   console.log(`  admin password: ${s.adminPassword}`);
-  console.log(`  data in ./data/*.json\n`);
+  console.log(`  data in ${DATA}\n`);
 });

@@ -9,7 +9,7 @@ import { requireAdmin } from '../lib/auth.js';
 const router = Router();
 
 router.get('/export', requireAdmin, (req, res) => {
-  res.set('Content-Disposition', 'attachment; filename="thefrendzo-export.json"');
+  res.set('Content-Disposition', 'attachment; filename="frientec-export.json"');
   res.json({
     exportedAt: new Date().toISOString(),
     categories: readJson(FILES.categories),

@@ -60,7 +60,11 @@ export function ensureData() {
   for (const [key, file] of Object.entries(FILES)) {
     if (!fs.existsSync(file)) {
       fs.writeFileSync(file, JSON.stringify(initial[key], null, 2), 'utf8');
-      console.log('  seeded', path.relative(ROOT, file));
+      // a relative path is only readable when the store is inside the project;
+      // pointed at a mounted volume it turns into a run of ../../.., so print
+      // whichever of the two actually tells the operator where the file went
+      const rel = path.relative(ROOT, file);
+      console.log('  seeded', rel.startsWith('..') ? file : rel);
     }
   }
 }

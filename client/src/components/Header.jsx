@@ -23,7 +23,7 @@ export default function Header() {
               <rect x="9" y="6" width="7" height="7" rx="1.5" opacity=".65" />
             </svg>
           </span>
-          <span className="disp" style={{ fontSize: '18px' }}>{settings.brand || 'The Frendzo'}</span>
+          <span className="disp" style={{ fontSize: '18px' }}>{settings.brand || 'Frientec'}</span>
         </Link>
         <nav>
           <button type="button" className="btn ghost sm" onClick={() => navigate('/designs')}>{t('Designs')}</button>

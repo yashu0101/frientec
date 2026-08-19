@@ -13,6 +13,7 @@ data/
 legacy-vanilla-backup.tar.gz
 
 # local
+.playwright-mcp/
 .DS_Store
 *.log
 .env

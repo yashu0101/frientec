@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
-   The Frendzo's own interface, in more than one language.
+   Frientec's own interface, in more than one language.
 
    This is separate from the multi-language feature inside the studio. That one
    is about the website a customer is buying. This one is about the shop they

@@ -30,7 +30,7 @@ export default function AdminLeads() {
 
   async function exportJson() {
     try {
-      downloadBlob(await exportBlob(), 'thefrendzo-export.json');
+      downloadBlob(await exportBlob(), 'frientec-export.json');
       say('Exported.');
     } catch (err) {
       say(err.message);

@@ -54,7 +54,7 @@ const QUERIES = {
 /* Wikimedia's User-Agent policy asks for an app name and a contact. A generic
    UA is answered with 429, which is what silently emptied whole trades before
    this was set. */
-const UA = 'ThefrendzoSampleFetcher/1.0 (https://example.com/thefrendzo; local demo project)';
+const UA = 'FrientecSampleFetcher/1.0 (https://example.com/frientec; local demo project)';
 
 /* Flickr serves a 1024px rendition from the same URL with an _b suffix, which
    is the right size for a hero and about a tenth of the bytes. Wikimedia's

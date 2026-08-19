@@ -10,7 +10,7 @@
 
    Two things are deliberate here.
 
-   1. The SDK is loaded lazily. The Frendzo's whole pitch is that you clone it
+   1. The SDK is loaded lazily. Frientec's whole pitch is that you clone it
       and run `node server.js`. If @anthropic-ai/sdk isn't installed, or no
       API key is set, the server still boots and the studio still works — it
       answers 503 with `fallback: true`, and the studio writes the draft

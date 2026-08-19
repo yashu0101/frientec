@@ -1,0 +1,18 @@
+# Railway. The volume is the part that matters: attach one in the service
+# settings with mount path /data, which is what DATA_DIR points at below.
+# Without it the catalogue reseeds on every deploy.
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "node server/index.js"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+[deploy.envs]
+NODE_ENV = "production"
+DATA_DIR = "/data"

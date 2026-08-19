@@ -2,15 +2,16 @@
    The brand split down the middle with the mark in the gap, thrown to the full
    width of the viewport. Any brand name works — the split lands on a real seam
    when the name has one (an internal capital, a space or a hyphen) and only
-   falls back to the midpoint when it does not. "The Frendzo" breaks at its
-   space, THE·FRENDZO. A name with no seam at all needs an entry in SEAMS,
+   falls back to the midpoint when it does not. A name with no seam at all
+   needs an entry in SEAMS — "Frientec" is friend + tech, so it breaks FRIEN·TEC
+   rather than at the midpoint,
    because the midpoint would cut it mid-syllable — SHOPF·RONT is the kind of
    detail that makes an otherwise expensive-looking page read as automated.
 --------------------------------------------------------------------------- */
-const SEAMS = { shopfront: 4 };
+const SEAMS = { shopfront: 4, frientec: 5 };
 
 export default function Wordmark({ brand }) {
-  const b = String(brand || 'The Frendzo');
+  const b = String(brand || 'Frientec');
   const seam = b.slice(1).search(/[A-Z]/);
   let at = seam >= 0 ? seam + 1 : /[ -]/.test(b) ? b.search(/[ -]/) : Math.floor(b.length / 2);
   if (SEAMS[b.toLowerCase()]) at = SEAMS[b.toLowerCase()];

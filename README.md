@@ -1,4 +1,4 @@
-# The Frendzo
+# Frientec
 
 A catalogue of ready-made website designs for local businesses, the studio where a customer
 makes one of them theirs, and the lead desk behind both.
@@ -598,7 +598,7 @@ put this on the internet.
 
 There are two separate things called "languages" here, and they are worth keeping apart.
 
-### 1. The Frendzo's own interface
+### 1. Frientec's own interface
 
 The switcher in the header — **EN · हिं · मरा** — puts the catalogue, the studio and the whole
 checkout into Hindi or Marathi. A shopkeeper in Nashik should be able to buy a website without
@@ -712,6 +712,60 @@ The quick form is still there for visitors who only want a call back.
    WhatsApp link pre-filled with the reference and business name.
 5. The server logs each new lead to the terminal.
 6. Admin sees it top of the table, sets status, value, priority and notes.
+
+---
+
+## Deploying it
+
+The app is a Node server that writes JSON files, so it needs a host that runs
+Node **and gives it a disk that survives a redeploy**. GitHub Pages, Netlify and
+any other static host cannot run it: the catalogue would load and every write —
+leads, orders, the admin panel — would fail.
+
+```bash
+npm run build && npm start     # one port, production shape, locally
+```
+
+### The one thing that matters
+
+`data/*.json` **is** the database. On a container host the filesystem is thrown
+away on every deploy, so the store has to live on a mounted volume:
+
+```bash
+DATA_DIR=/data node server/index.js
+```
+
+`DATA_DIR` defaults to `./data`, which is right locally and wrong in a container.
+Set it, mount a volume there, and the leads and orders survive. Forget it and
+every deploy silently resets the catalogue to the seed.
+
+### Railway
+
+`railway.toml` and the `Dockerfile` are committed, so the service builds as-is.
+Two things must be set in the Railway UI, because neither can live in the repo:
+
+1. **A volume**, mount path `/data` — this is the persistence.
+2. **`ANTHROPIC_API_KEY`**, only if you want AI drafting. Without it the studio
+   writes drafts on the device and everything else behaves identically.
+
+`PORT` is injected by Railway and the server already reads it. The healthcheck
+is `/api/health`.
+
+### Any other Node host
+
+```bash
+docker build -t frientec .
+docker run -p 4000:4000 -v frientec-data:/data frientec
+```
+
+The image is two-stage: the React app is built with the dev dependencies, then
+only the production ones ship. `/data` is declared as a volume.
+
+### Before you point a domain at it
+
+The admin password is `admin` until you change it, sessions are in memory, and
+there is no rate limiting worth the name on the write routes. See the notes
+below.
 
 ---
 

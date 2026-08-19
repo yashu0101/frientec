@@ -483,7 +483,7 @@ const SAMPLE_ORDERS = [
 ];
 
 const SETTINGS = {
-  brand: 'The Frendzo',
+  brand: 'Frientec',
   startingPrice: 7999,
   whatsapp: '+91 98765 43210',
   email: 'hello@example.com',
@@ -499,7 +499,7 @@ const SETTINGS = {
   domainPrivacyPrice: 299,
   gstPercent: 18,
   advancePercent: 50,
-  upiId: 'thefrendzo@upi',
+  upiId: 'frientec@upi',
   dynamicNote: 'Everything above is a fast static website — perfect if your content changes now and then and we make the edits for you. If you want a dynamic system instead — your own admin panel, customer logins, live stock and prices, bookings with a calendar, dashboards, reports, an app-style backend — we build that too. It is quoted per project because no two are the same. Talk to us and we will scope it on a call.',
 };
 
