@@ -1,0 +1,31 @@
+# Render, on the free tier. The free plan has no persistent disk, which is
+# exactly why the store can run on Postgres: set DATABASE_URL and the JSON
+# documents live in the database instead of on a disk that does not survive a
+# deploy. A free Neon or Supabase database is enough.
+#
+# Two values have to be filled in by hand — Render will prompt for both on the
+# first deploy because they are marked sync: false:
+#
+#   DATABASE_URL   the connection string from Neon/Supabase
+#   CORS_ORIGIN    the front end's origin, e.g. https://frientec-client.vercel.app
+#
+# Note the free plan sleeps after inactivity. With Postgres behind it that costs
+# a cold start, not data.
+
+services:
+  - type: web
+    name: frientec-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      # optional — turns on AI drafting in the studio
+      - key: ANTHROPIC_API_KEY
+        sync: false

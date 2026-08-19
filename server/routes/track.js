@@ -7,7 +7,7 @@
    internal notes or a stage the studio has not told them about.
 --------------------------------------------------------------------------- */
 import { Router } from 'express';
-import { FILES, readJson, writeJson } from '../lib/store.js';
+import { KEYS, readJson, writeJson } from '../lib/store.js';
 import { limit } from '../lib/throttle.js';
 import { phoneTail } from '../lib/ids.js';
 
@@ -25,7 +25,7 @@ router.post('/track', limit('track', 10, 'Too many lookups. Wait a minute.'), (r
     return res.status(400).json({ error: 'Enter your reference number and the phone number on the order.' });
   }
 
-  const project = readJson(FILES.projects).find(matcher(ref, digits));
+  const project = readJson(KEYS.projects).find(matcher(ref, digits));
   // Same answer whether the ref is wrong or the phone is — no probing.
   if (!project) return res.status(404).json({ error: 'No order matches that reference and phone number.' });
 
@@ -60,7 +60,7 @@ router.post('/submit', limit('submit', 12, 'Too many uploads at once. Give it a 
   const ref = String(b.ref || '').trim().toUpperCase();
   const digits = String(b.phone || '').replace(/\D/g, '');
 
-  const projects = readJson(FILES.projects);
+  const projects = readJson(KEYS.projects);
   const i = projects.findIndex(matcher(ref, digits));
   if (i < 0) return res.status(404).json({ error: 'No order matches that reference and phone number.' });
 
@@ -76,7 +76,7 @@ router.post('/submit', limit('submit', 12, 'Too many uploads at once. Give it a 
   };
   projects[i].submissions = (projects[i].submissions || []).concat([submission]);
   projects[i].updatedAt = new Date().toISOString();
-  await writeJson(FILES.projects, projects);
+  await writeJson(KEYS.projects, projects);
   console.log(`  content received for ${projects[i].id} — ${images.length} photo(s)${note ? ' + a note' : ''}`);
   res.status(201).json({ ok: true, count: projects[i].submissions.length });
 });

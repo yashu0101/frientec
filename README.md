@@ -728,16 +728,48 @@ npm run build && npm start     # one port, production shape, locally
 
 ### The one thing that matters
 
-`data/*.json` **is** the database. On a container host the filesystem is thrown
-away on every deploy, so the store has to live on a mounted volume:
+`data/*.json` **is** the database, and a container host throws its filesystem
+away on every deploy. So the store is pluggable — pick whichever of these the
+host can actually give you:
+
+| Set this | Store lives in | Use when |
+|---|---|---|
+| nothing | `./data/*.json` | locally |
+| `DATA_DIR=/data` | JSON files on a mounted volume | the host sells you a disk (Railway, Fly) |
+| `DATABASE_URL=postgres://…` | one Postgres table, five JSONB rows | the host has no disk (any free tier) |
+
+`DATABASE_URL` wins when both are set. The documents are read and written whole
+either way, so nothing above `server/lib/store.js` changes: same API, same
+behaviour, same seed on an empty store.
+
+Get one of those right and the leads and orders survive a deploy. Get none of
+them right and the service still starts and looks healthy — it just quietly
+reseeds the catalogue every time.
+
+### Free, and it keeps the data
+
+A free web service plus a free Postgres. `render.yaml` is committed:
+
+1. Create a free database on **Neon** or **Supabase**, copy the connection string.
+2. Render → New → Blueprint → point it at this repo. It reads `render.yaml` and
+   asks for `DATABASE_URL` and `CORS_ORIGIN`.
+3. `CORS_ORIGIN` is the front end's origin — `https://frientec-client.vercel.app`.
+
+The free plan sleeps after inactivity; with Postgres behind it that costs a cold
+start rather than the data.
+
+### Front end on a static host
+
+`/api`, `/img` and `/sites` are all server features, so a static host has none of
+them and the catalogue comes up empty. Build the client with the API's URL:
 
 ```bash
-DATA_DIR=/data node server/index.js
+VITE_API_BASE=https://frientec-api.onrender.com npm run build
 ```
 
-`DATA_DIR` defaults to `./data`, which is right locally and wrong in a container.
-Set it, mount a volume there, and the leads and orders survive. Forget it and
-every deploy silently resets the catalogue to the seed.
+On Vercel that is an environment variable on the project — and because Vite bakes
+it into the bundle, it only takes effect on the next build. Set `CORS_ORIGIN` on
+the API to match, or the browser blocks every request.
 
 ### Railway
 

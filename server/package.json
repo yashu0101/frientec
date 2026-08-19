@@ -9,9 +9,10 @@
     "dev": "node --watch index.js"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
   },
-  "//": "The AI SDK is optional and loaded lazily — the API boots and the studio drafts offline without it.",
+  "//": "The AI SDK is optional and loaded lazily. pg is only used when DATABASE_URL is set; without it the store is JSON files on disk.",
   "optionalDependencies": {
     "@anthropic-ai/sdk": "^0.116.0"
   }

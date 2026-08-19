@@ -32,8 +32,7 @@
      POST   /api/import         [admin]  put an export back
 --------------------------------------------------------------------------- */
 import express from 'express';
-import { ensureData, settings } from './lib/store.js';
-import { DATA } from './lib/paths.js';
+import { initStore, settings, driverName } from './lib/store.js';
 import { mountStatic, mountClient } from './static.js';
 import { cors, corsEnabled, corsOrigins } from './lib/cors.js';
 
@@ -53,8 +52,6 @@ const PORT = Number(process.env.PORT) || 4000;
 // URLs, so those routes need a much bigger ceiling than the rest of the API.
 const BODY_LIMIT = '1mb';
 const UPLOAD_LIMIT = '16mb';
-
-ensureData();
 
 const app = express();
 app.disable('x-powered-by');
@@ -103,11 +100,25 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || 'Something went wrong on the server.' });
 });
 
+/* The store is loaded before the first request rather than lazily, so a bad
+   DATABASE_URL fails at boot with a clear error instead of 500ing one route at a
+   time. */
+try {
+  await initStore();
+} catch (e) {
+  console.error(`\n  Could not open the store.\n  ${e.message}\n`);
+  if (process.env.DATABASE_URL) {
+    console.error('  DATABASE_URL is set, so Postgres was used. Check the host is reachable');
+    console.error('  and the credentials are right. Unset it to fall back to JSON files.\n');
+  }
+  process.exit(1);
+}
+
 app.listen(PORT, () => {
   const s = settings();
   console.log(`\n  ${s.brand} API running at http://localhost:${PORT}`);
   console.log(`  admin password: ${s.adminPassword}`);
-  console.log(`  data in ${DATA}`);
+  console.log(`  store: ${driverName()}`);
   if (corsEnabled) console.log(`  cross-origin allowed for ${corsOrigins.join(', ')}`);
   console.log('');
 });

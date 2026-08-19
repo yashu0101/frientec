@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { FILES, readJson, publicSettings } from '../lib/store.js';
+import { KEYS, readJson, publicSettings } from '../lib/store.js';
 
 const router = Router();
 
@@ -7,8 +7,8 @@ const router = Router();
    public half of settings. */
 router.get('/bootstrap', (req, res) => {
   res.json({
-    categories: readJson(FILES.categories),
-    demos: readJson(FILES.demos),
+    categories: readJson(KEYS.categories),
+    demos: readJson(KEYS.demos),
     settings: publicSettings(),
   });
 });

@@ -3,7 +3,7 @@
    optional and replaces its file wholesale, so a partial export restores the
    parts it has. */
 import { Router } from 'express';
-import { FILES, readJson, writeJson } from '../lib/store.js';
+import { KEYS, readJson, writeJson } from '../lib/store.js';
 import { requireAdmin } from '../lib/auth.js';
 
 const router = Router();
@@ -12,18 +12,18 @@ router.get('/export', requireAdmin, (req, res) => {
   res.set('Content-Disposition', 'attachment; filename="frientec-export.json"');
   res.json({
     exportedAt: new Date().toISOString(),
-    categories: readJson(FILES.categories),
-    demos: readJson(FILES.demos),
-    leads: readJson(FILES.leads),
-    projects: readJson(FILES.projects),
+    categories: readJson(KEYS.categories),
+    demos: readJson(KEYS.demos),
+    leads: readJson(KEYS.leads),
+    projects: readJson(KEYS.projects),
   });
 });
 
 const PARTS = [
-  ['categories', FILES.categories, (v) => Array.isArray(v) && v.every((c) => c && c.slug && c.name)],
-  ['demos', FILES.demos, (v) => Array.isArray(v) && v.every((d) => d && d.slug && d.category)],
-  ['leads', FILES.leads, (v) => Array.isArray(v) && v.every((l) => l && l.id)],
-  ['projects', FILES.projects, (v) => Array.isArray(v) && v.every((p) => p && p.id && p.customer)],
+  ['categories', KEYS.categories, (v) => Array.isArray(v) && v.every((c) => c && c.slug && c.name)],
+  ['demos', KEYS.demos, (v) => Array.isArray(v) && v.every((d) => d && d.slug && d.category)],
+  ['leads', KEYS.leads, (v) => Array.isArray(v) && v.every((l) => l && l.id)],
+  ['projects', KEYS.projects, (v) => Array.isArray(v) && v.every((p) => p && p.id && p.customer)],
 ];
 
 router.post('/import', requireAdmin, async (req, res) => {

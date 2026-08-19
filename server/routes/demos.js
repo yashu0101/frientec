@@ -1,15 +1,15 @@
 import { Router } from 'express';
-import { FILES, readJson, writeJson } from '../lib/store.js';
+import { KEYS, readJson, writeJson } from '../lib/store.js';
 import { requireAdmin } from '../lib/auth.js';
 import { slugify, nextDemoId } from '../lib/ids.js';
 import * as seed from '../lib/seed.js';
 
 const router = Router();
 
-router.get('/demos', (req, res) => res.json(readJson(FILES.demos)));
+router.get('/demos', (req, res) => res.json(readJson(KEYS.demos)));
 
 router.post('/demos', requireAdmin, async (req, res) => {
-  const demos = readJson(FILES.demos);
+  const demos = readJson(KEYS.demos);
   const b = req.body;
   if (!b.name || !b.category) return res.status(400).json({ error: 'Name and category are required.' });
 
@@ -30,12 +30,12 @@ router.post('/demos', requireAdmin, async (req, res) => {
     createdAt: new Date().toISOString(),
   };
   demos.push(demo);
-  await writeJson(FILES.demos, demos);
+  await writeJson(KEYS.demos, demos);
   res.status(201).json(demo);
 });
 
 router.patch('/demos/:id', requireAdmin, async (req, res) => {
-  const demos = readJson(FILES.demos);
+  const demos = readJson(KEYS.demos);
   const { id } = req.params;
   const i = demos.findIndex((d) => d.id === id || d.slug === id);
   if (i < 0) return res.status(404).json({ error: 'Design not found.' });
@@ -44,16 +44,16 @@ router.patch('/demos/:id', requireAdmin, async (req, res) => {
   delete b.id;
   if (b.slug) b.slug = slugify(b.slug);
   demos[i] = { ...demos[i], ...b, updatedAt: new Date().toISOString() };
-  await writeJson(FILES.demos, demos);
+  await writeJson(KEYS.demos, demos);
   res.json(demos[i]);
 });
 
 router.delete('/demos/:id', requireAdmin, async (req, res) => {
-  const demos = readJson(FILES.demos);
+  const demos = readJson(KEYS.demos);
   const { id } = req.params;
   const next = demos.filter((d) => d.id !== id && d.slug !== id);
   if (next.length === demos.length) return res.status(404).json({ error: 'Design not found.' });
-  await writeJson(FILES.demos, next);
+  await writeJson(KEYS.demos, next);
   res.json({ deleted: id });
 });
 

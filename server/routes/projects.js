@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { FILES, readJson, writeJson, settings } from '../lib/store.js';
+import { KEYS, readJson, writeJson, settings } from '../lib/store.js';
 import { requireAdmin } from '../lib/auth.js';
 import { nextLeadId, nextProjectId, today } from '../lib/ids.js';
 import { quote } from '../../shared/pricing.js';
@@ -11,7 +11,7 @@ const REQUIRED = ['owner', 'business', 'phone', 'whatsapp', 'city', 'category'];
 /* An order from the studio. The customer's uploaded logo and photos ride along
    in this body as data URLs, so it is mounted behind the upload-sized parser. */
 router.post('/projects', async (req, res) => {
-  const projects = readJson(FILES.projects);
+  const projects = readJson(KEYS.projects);
   const b = req.body;
   const c = b.customer || {};
 
@@ -49,10 +49,10 @@ router.post('/projects', async (req, res) => {
     createdAt: new Date().toISOString(),
   };
   projects.unshift(project);
-  await writeJson(FILES.projects, projects);
+  await writeJson(KEYS.projects, projects);
 
   // Mirror it into the lead desk so one table still shows all incoming work.
-  const leads = readJson(FILES.leads);
+  const leads = readJson(KEYS.leads);
   leads.unshift({
     id: nextLeadId(leads),
     owner: c.owner, business: c.business, phone: c.phone, whatsapp: c.whatsapp,
@@ -64,31 +64,31 @@ router.post('/projects', async (req, res) => {
     status: 'Qualified', value: q.total, priority: 'High', notes: '',
     date: today(), createdAt: new Date().toISOString(),
   });
-  await writeJson(FILES.leads, leads);
+  await writeJson(KEYS.leads, leads);
 
   console.log(`  new order ${project.id} — ${c.business} (${c.city}) · ${q.plan.name} · ₹${q.total.toLocaleString('en-IN')} · advance ₹${q.advance.toLocaleString('en-IN')}`);
   res.status(201).json(project);
 });
 
-router.get('/projects', requireAdmin, (req, res) => res.json(readJson(FILES.projects)));
+router.get('/projects', requireAdmin, (req, res) => res.json(readJson(KEYS.projects)));
 
 router.patch('/projects/:id', requireAdmin, async (req, res) => {
-  const projects = readJson(FILES.projects);
+  const projects = readJson(KEYS.projects);
   const i = projects.findIndex((p) => p.id === req.params.id);
   if (i < 0) return res.status(404).json({ error: 'Order not found.' });
   const b = { ...req.body };
   delete b.id;
   delete b.quote; // recomputed, never taken from a request
   projects[i] = { ...projects[i], ...b, updatedAt: new Date().toISOString() };
-  await writeJson(FILES.projects, projects);
+  await writeJson(KEYS.projects, projects);
   res.json(projects[i]);
 });
 
 router.delete('/projects/:id', requireAdmin, async (req, res) => {
-  const projects = readJson(FILES.projects);
+  const projects = readJson(KEYS.projects);
   const next = projects.filter((p) => p.id !== req.params.id);
   if (next.length === projects.length) return res.status(404).json({ error: 'Order not found.' });
-  await writeJson(FILES.projects, next);
+  await writeJson(KEYS.projects, next);
   res.json({ deleted: req.params.id });
 });
 
