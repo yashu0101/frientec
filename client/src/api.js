@@ -1,3 +1,5 @@
+import { API_BASE } from './config.js';
+
 /* One fetch wrapper. Carries the admin token when there is one, and turns a
    non-2xx into an Error that keeps the status and body — callers sometimes need
    to tell "the server can't do this" apart from "the server said no". */
@@ -16,7 +18,7 @@ export async function api(method, path, body, { limitless = false } = {}) {
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers['x-admin-token'] = token;
 
-  const res = await fetch('/api' + path, {
+  const res = await fetch(API_BASE + '/api' + path, {
     method,
     headers,
     body: body === undefined ? undefined : JSON.stringify(body),
@@ -36,7 +38,7 @@ export async function api(method, path, body, { limitless = false } = {}) {
 
 /* The export route answers with a file, so it is fetched rather than parsed. */
 export function exportBlob() {
-  return fetch('/api/export', { headers: token ? { 'x-admin-token': token } : {} }).then((r) => {
+  return fetch(API_BASE + '/api/export', { headers: token ? { 'x-admin-token': token } : {} }).then((r) => {
     if (!r.ok) throw new Error('Could not export.');
     return r.blob();
   });

@@ -1,3 +1,5 @@
+import { asset } from '../config.js';
+
 /* ---------------------------------------------------------------------------
    Template registry.
 
@@ -73,7 +75,7 @@
 
   function photo(cat, v, style) {
     return '<div style="' + (style || '') +
-      "background-image:url('/img/" + cat + '-' + v + "');" +
+      "background-image:url('" + asset('/img/' + cat + '-' + v) + "');" +
       'background-size:cover;background-position:center;"></div>';
   }
 
@@ -490,7 +492,7 @@
   };
 
   function sitePage(d) {
-    var src = SITE_FILES[d.template] || SITE_FILES[d.slug];
+    var src = asset(SITE_FILES[d.template] || SITE_FILES[d.slug]);
     /* `title` rather than a bare frame: screen readers announce an unlabelled
        iframe as "frame", which tells nobody what they have landed in. */
     return '<iframe class="siteframe" src="' + src + '" title="' + esc(d.name) + ' — live preview" loading="lazy"></iframe>';

@@ -8,6 +8,7 @@
 import { Suspense, lazy, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useApp } from './state/AppProvider.jsx';
+import { API_BASE } from './config.js';
 import { UIProvider } from './state/UIProvider.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
@@ -76,10 +77,30 @@ export default function App() {
 
   if (!booted) return <div className="boot">Loading the catalogue…</div>;
 
+  /* This screen is the first thing a broken deployment shows, so it says which
+     of the two situations it is in rather than telling a deployed site to run
+     `npm run dev`. */
   if (bootError) {
     return (
       <div className="boot">
-        Could not reach the server. Is it running? <code>npm run dev</code>
+        {API_BASE ? (
+          <>
+            Could not reach the API at <code>{API_BASE}</code>.
+            <br />
+            <br />
+            Check that host is running, and that this origin is listed in its{' '}
+            <code>CORS_ORIGIN</code>.
+          </>
+        ) : (
+          <>
+            This build has no <code>VITE_API_BASE</code>, so it is asking its own origin for{' '}
+            <code>/api</code> — and a static host has no API.
+            <br />
+            <br />
+            Set <code>VITE_API_BASE</code> to your API host and redeploy, or serve the whole app
+            from one port with <code>npm start</code>. Locally: <code>npm run dev</code>.
+          </>
+        )}
         <br />
         <br />
         {bootError}

@@ -1,3 +1,5 @@
+import { asset } from '../config.js';
+
 /* ---------------------------------------------------------------------------
    renderCustom(demo, C) -> a complete HTML document.
 
@@ -99,7 +101,7 @@
   function picture(src, height, fallbackCss, label, alt) {
     if (src) {
       return '<div class="pic" style="height:' + height + '">' +
-        '<img src="' + src + '" alt="' + esc(alt || label || '') + '" loading="lazy" /></div>';
+        '<img src="' + asset(src) + '" alt="' + esc(alt || label || '') + '" loading="lazy" /></div>';
     }
     return '<div class="pic ph" style="height:' + height + ';' + fallbackCss + '" role="img" aria-label="' +
       esc(alt || label || 'Placeholder image') + '">' +
@@ -169,7 +171,7 @@ export function renderCustom(demo, C) {
 
     /* ---- nav ---- */
     var brandMark = C.logo
-      ? '<img class="logo" src="' + C.logo + '" alt="' + esc(name) + '" />'
+      ? '<img class="logo" src="' + asset(C.logo) + '" alt="' + esc(name) + '" />'
       : '<span class="wordmark">' + esc(name) + '</span>';
 
     var nav =
@@ -205,7 +207,7 @@ export function renderCustom(demo, C) {
         '</section>';
     } else if (C.layout === 'image') {
       hero =
-        '<section class="hero image" id="top" style="' + (C.hero ? 'background-image:url(' + C.hero + ')' : heroGrad) + '">' +
+        '<section class="hero image" id="top" style="' + (C.hero ? 'background-image:url(' + asset(C.hero) + ')' : heroGrad) + '">' +
         '<div class="scrim"></div><div class="inner">' +
         (eyebrow ? '<div class="eyebrow light">' + esc(eyebrow) + '</div>' : '') +
         h1 + leadP + heroBtns + '</div></section>';

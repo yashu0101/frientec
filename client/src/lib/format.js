@@ -1,3 +1,5 @@
+import { asset } from '../config.js';
+
 /* Numbers, names and the per-trade colour and icon each card is dressed in. */
 
 export const inr = (n) => '₹' + Number(n || 0).toLocaleString('en-IN');
@@ -48,12 +50,15 @@ export function pickShot(slot, i) {
 }
 
 export const thumbArt = (category, variant) =>
-  `linear-gradient(180deg,rgba(0,0,0,.34),rgba(0,0,0,.06)),url('/img/${category || 'local-services'}-${variant}')`;
+  `linear-gradient(180deg,rgba(0,0,0,.34),rgba(0,0,0,.06)),url('${asset(`/img/${category || 'local-services'}-${variant}`)}')`;
 
 /* The bare photograph a design opens with, no gradient over it — what the
    landing scenes put on an orbiting card or the face of a box. */
-export const artOf = (d) => `/img/${d.category || 'local-services'}-${pickShot(d.shot, 0)}`;
+export const artOf = (d) => asset(`/img/${d.category || 'local-services'}-${pickShot(d.shot, 0)}`);
 
+/* Stays relative on purpose: this value goes into the studio's state and is
+   saved onto the order, so it must not carry whichever host built the page.
+   It is resolved at render time instead. */
 export const sampleImage = (slug, variant) => `/img/${slug || 'local-services'}-${variant}`;
 export const isSample = (src) => typeof src === 'string' && src.indexOf('/img/') === 0;
 

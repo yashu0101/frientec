@@ -6,6 +6,7 @@
 import { useEffect, useState } from 'react';
 import { useT } from '../i18n/I18nProvider.jsx';
 import StageHead from '../components/StageHead.jsx';
+import { asset } from '../config.js';
 
 export default function Credits() {
   const t = useT();
@@ -13,7 +14,7 @@ export default function Credits() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/img/credits.json')
+    fetch(asset('/img/credits.json'))
       .then((r) => (r.ok ? r.json() : {}))
       .then((j) => {
         setRows(

@@ -12,6 +12,7 @@
    photograph of somebody's actual shop.
 --------------------------------------------------------------------------- */
 import { pickShot, thumbArt } from '../lib/format.js';
+import { asset } from '../config.js';
 
 export default function Thumb({ demo, height, photo, name }) {
   const d = demo || {};
@@ -19,7 +20,7 @@ export default function Thumb({ demo, height, photo, name }) {
   const bg = dark ? d.ink : '#fff';
   const fg = dark ? 'rgba(255,255,255,.86)' : d.ink;
   const soft = dark ? 'rgba(255,255,255,.14)' : 'rgba(16,24,32,.10)';
-  const band = photo ? `url('${photo}')` : thumbArt(d.category, pickShot(d.shot, 0));
+  const band = photo ? `url('${asset(photo)}')` : thumbArt(d.category, pickShot(d.shot, 0));
 
   return (
     <div className="thumb" style={{ background: bg, ...(height ? { height: `${height}px` } : null) }}>

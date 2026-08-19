@@ -35,6 +35,7 @@ import express from 'express';
 import { ensureData, settings } from './lib/store.js';
 import { DATA } from './lib/paths.js';
 import { mountStatic, mountClient } from './static.js';
+import { cors, corsEnabled, corsOrigins } from './lib/cors.js';
 
 import authRoutes from './routes/auth.js';
 import bootstrapRoutes from './routes/bootstrap.js';
@@ -58,6 +59,7 @@ ensureData();
 const app = express();
 app.disable('x-powered-by');
 app.set('trust proxy', true);
+app.use(cors);
 
 const api = express.Router();
 
@@ -105,5 +107,7 @@ app.listen(PORT, () => {
   const s = settings();
   console.log(`\n  ${s.brand} API running at http://localhost:${PORT}`);
   console.log(`  admin password: ${s.adminPassword}`);
-  console.log(`  data in ${DATA}\n`);
+  console.log(`  data in ${DATA}`);
+  if (corsEnabled) console.log(`  cross-origin allowed for ${corsOrigins.join(', ')}`);
+  console.log('');
 });
